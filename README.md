@@ -1,6 +1,5 @@
 # FncyWallet
 
-[![CI Status](https://img.shields.io/travis/plasticDucky/FncyWallet.svg?style=flat)](https://travis-ci.org/plasticDucky/FncyWallet)
 [![Version](https://img.shields.io/cocoapods/v/FncyWallet.svg?style=flat)](https://cocoapods.org/pods/FncyWallet)
 [![License](https://img.shields.io/cocoapods/l/FncyWallet.svg?style=flat)](https://cocoapods.org/pods/FncyWallet)
 [![Platform](https://img.shields.io/cocoapods/p/FncyWallet.svg?style=flat)](https://cocoapods.org/pods/FncyWallet)
@@ -22,8 +21,8 @@ pod 'FncyWallet'
 
 ## Author
 
-plasticDucky, jhpark27@nm-metaworld.com
+Metaverse World, Inc
 
 ## License
 
-FncyWallet is available under the MIT license. See the LICENSE file for more info.
+FncyWallet is available under the Apache License, Version 2.0(the "License"). See the LICENSE file for more info.

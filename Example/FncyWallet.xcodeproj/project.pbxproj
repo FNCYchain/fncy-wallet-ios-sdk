@@ -28,8 +28,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1F3C95F461A4131D647C7753 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		49CE4069FDD29EE62B0EF8E0 /* FncyWallet.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = FncyWallet.podspec; path = ../FncyWallet.podspec; sourceTree = "<group>"; };
+		1F3C95F461A4131D647C7753 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		49CE4069FDD29EE62B0EF8E0 /* FncyWallet.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = FncyWallet.podspec; path = ../FncyWallet.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		607FACD01AFB9204008FA782 /* FncyWallet_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FncyWallet_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -41,7 +41,7 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		63603F404D952F7A9A54B499 /* Pods-FncyWallet_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FncyWallet_Example.release.xcconfig"; path = "Target Support Files/Pods-FncyWallet_Example/Pods-FncyWallet_Example.release.xcconfig"; sourceTree = "<group>"; };
-		B057FFC6741F2A73259F9852 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		B057FFC6741F2A73259F9852 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		BACA5ECF5C593C680F5CE8F3 /* Pods_FncyWallet_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FncyWallet_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D65C8BF3A6D7AB45C9BA091E /* Pods-FncyWallet_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FncyWallet_Tests.release.xcconfig"; path = "Target Support Files/Pods-FncyWallet_Tests/Pods-FncyWallet_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		E57D5196C2632ED5EFDE37E0 /* Pods-FncyWallet_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FncyWallet_Example.debug.xcconfig"; path = "Target Support Files/Pods-FncyWallet_Example/Pods-FncyWallet_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -156,7 +156,6 @@
 				FDA70FADAFDD7A3A2F7FA3B5 /* Pods-FncyWallet_Tests.debug.xcconfig */,
 				D65C8BF3A6D7AB45C9BA091E /* Pods-FncyWallet_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -227,6 +226,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
