@@ -20,11 +20,25 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
+**Podfile**
 FncyWallet is available through [CocoaPods](https://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
 pod 'FncyWallet'
+```
+
+**Package.swift**
+```swift
+let package = Package(
+  name: "MyPackage",
+  dependencies: [
+    .package(url: "https://github.com/FNCYchain/fncy-wallet-ios-sdk.git", Version(0,1,0)..<Version(1,0,0))
+  ],
+  targets: [
+    .target(name: "MyTarget", dependencies: ["FncyWallet"])
+  ]
+)
 ```
 
 ## Author
