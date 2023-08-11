@@ -1,4 +1,4 @@
-# FncyWallet
+# Fncy Wallet iOS
 
 [![Version](https://img.shields.io/cocoapods/v/FncyWallet.svg?style=flat)](https://cocoapods.org/pods/FncyWallet)
 [![License](https://img.shields.io/cocoapods/l/FncyWallet.svg?style=flat)](https://cocoapods.org/pods/FncyWallet)
