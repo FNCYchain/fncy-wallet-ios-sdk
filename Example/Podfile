@@ -1,9 +1,11 @@
 use_frameworks!
 
-platform :ios, '10.0'
+platform :ios, '14.0'
 
 target 'FncyWallet_Example' do
   pod 'FncyWallet', :path => '../'
+  pod 'Alamofire', '~> 5.7'
+  pod 'SwiftyRSA', '~> 1.7'
 
   target 'FncyWallet_Tests' do
     inherit! :search_paths

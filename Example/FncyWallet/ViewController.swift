@@ -1,18 +1,39 @@
+// Copyright 2023 Metaverse World Inc.
 //
-//  ViewController.swift
-//  FncyWallet
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//  Created by plasticDucky on 08/10/2023.
-//  Copyright (c) 2023 plasticDucky. All rights reserved.
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
-
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 import UIKit
+import FncyWallet
 
 class ViewController: UIViewController {
 
+    var fncyWallet : FncyWalletCore!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        self.fncyWallet = FncyWalletCore(authToken: "someAuthorizationToken")
+        
+        Task {
+            do {
+                let gasPriceInfo = try await self.fncyWallet.getGasPrice(chainID: 3)
+                print(String(describing: gasPriceInfo))
+                
+            } catch(let error) {
+                print(String(describing: error))
+            }
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {

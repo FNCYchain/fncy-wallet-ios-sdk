@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "FncyWallet"
-  s.version          = "0.1.0"
+  s.version          = "0.1.1"
   s.summary          = "FNCY Wallet for iOS"
   s.homepage         = "https://github.com/FNCYchain/fncy_wallet_ios"
   s.license          = { :type => "Apache-2.0", :file => "LICENSE" }
