@@ -1,4 +1,4 @@
-# Fncy Wallet iOS
+# Fncy Wallet SDK for iOS
 
 [![Version](https://img.shields.io/cocoapods/v/FncyWallet.svg?style=flat)](https://cocoapods.org/pods/FncyWallet)
 [![License](https://img.shields.io/cocoapods/l/FncyWallet.svg?style=flat)](https://cocoapods.org/pods/FncyWallet)
@@ -8,7 +8,15 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+## Dependencies
+
+* [Alamofire](https://github.com/Alamofire/Alamofire) >= 5.7
+* [SwiftyRSA](https://github.com/TakeScoop/SwiftyRSA) >= 1.7
+
 ## Requirements
+
+* Swift 5
+* iOS 14
 
 ## Installation
 
