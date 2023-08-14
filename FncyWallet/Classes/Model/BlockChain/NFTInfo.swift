@@ -46,3 +46,9 @@ public struct NFTItemInfo: Codable {
         self.useYn = try container.decode(String.self, forKey: .useYn) == "Y"
     }
 }
+
+extension NFTItemInfo : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}

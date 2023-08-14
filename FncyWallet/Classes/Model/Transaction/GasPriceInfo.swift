@@ -21,3 +21,9 @@ public struct GasPriceInfo: Codable {
     public let maxPriorityFeePerGas: Decimal
     public let baseFeePerGas: Decimal
 }
+
+extension GasPriceInfo : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}

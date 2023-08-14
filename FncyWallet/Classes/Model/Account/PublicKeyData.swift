@@ -16,6 +16,8 @@ import Foundation
 
 // getRSAKeys API Domain
 //
-public struct PublicKeyData: Codable {
+public struct PublicKeyData: ResultPresentable {
+    public var resultType: String?
+    public var result: ResultInfo?
     public let userRsaPubKey: String?
 }

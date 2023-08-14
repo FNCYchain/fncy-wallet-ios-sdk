@@ -45,3 +45,9 @@ public struct FncyInfo: Codable {
     let slug: String
     let cmcName: String
 }
+
+extension FncyInfo : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}

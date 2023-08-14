@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		289714F6822DACE8D19DC9DA /* Pods_FncyWallet_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BACA5ECF5C593C680F5CE8F3 /* Pods_FncyWallet_Tests.framework */; };
+		370798652A89F1B000C997C3 /* Tests+Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370798642A89F1B000C997C3 /* Tests+Wallet.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 
 /* Begin PBXFileReference section */
 		1F3C95F461A4131D647C7753 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		370798642A89F1B000C997C3 /* Tests+Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tests+Wallet.swift"; sourceTree = "<group>"; };
 		49CE4069FDD29EE62B0EF8E0 /* FncyWallet.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = FncyWallet.podspec; path = ../FncyWallet.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		607FACD01AFB9204008FA782 /* FncyWallet_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FncyWallet_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 			children = (
 				607FACEB1AFB9204008FA782 /* Tests.swift */,
 				607FACE91AFB9204008FA782 /* Supporting Files */,
+				370798642A89F1B000C997C3 /* Tests+Wallet.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				370798652A89F1B000C997C3 /* Tests+Wallet.swift in Sources */,
 				607FACEC1AFB9204008FA782 /* Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

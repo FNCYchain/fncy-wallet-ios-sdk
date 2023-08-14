@@ -21,3 +21,9 @@ public struct FncyBalance: Codable {
     public let totalUsdPrice: Decimal
     public let wid: Int
 }
+
+extension FncyBalance : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}

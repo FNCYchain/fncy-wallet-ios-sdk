@@ -20,35 +20,61 @@ public struct FncyWalletResponse<C: Codable>: Codable {
     let data: C
 }
 
+extension FncyWalletResponse : CustomStringConvertible  {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
+
+
 public struct Status: Codable {
     let code: Int
     let message: String
 }
 
+extension Status : CustomStringConvertible  {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
+
+public protocol ResultPresentable : Codable {
+    var resultType: String? { get }
+    var result: ResultInfo? { get }
+}
+
 // ListData<C>
-public struct ListData<C: Codable>: Codable {
+public struct ListData<C: Codable>: ResultPresentable {
     public let items: C?
     public let resultType: String?
     public let result: ResultInfo?
-
+    public let paging: Paging?
+    public let wid : Int?
+    public let signature : String?
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: ListData<C>.CodingKeys.self)
-        self.resultType = try container.decodeIfPresent(String.self, forKey: ListData<C>.CodingKeys.resultType)
-        self.result = try container.decodeIfPresent(ResultInfo.self, forKey: ListData<C>.CodingKeys.result)
-        self.items = try container.decodeIfPresent(C.self, forKey: ListData<C>.CodingKeys.items)
+        self.resultType = try container.decodeIfPresent(String.self, forKey: .resultType)
+        self.result = try container.decodeIfPresent(ResultInfo.self, forKey: .result)
+        self.items = try container.decodeIfPresent(C.self, forKey: .items)
+        self.paging = try container.decodeIfPresent(Paging.self, forKey: .paging)
+        self.wid = try container.decodeIfPresent(Int.self, forKey: .wid)
+        self.signature = try container.decodeIfPresent(String.self, forKey: .signature)
     }
 }
 
 // PagingListData<C>
-public struct PagingListData<C: Codable>: Codable {
+public struct PagingListData<C: Codable>: ResultPresentable {
     public let items: C?
-    public let paging: Paging?
+    
     public let resultType: String?
     public let result: ResultInfo?
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: PagingListData<C>.CodingKeys.self)
-        self.paging = try container.decodeIfPresent(Paging.self, forKey: PagingListData<C>.CodingKeys.paging)
+        
         self.resultType = try container.decodeIfPresent(String.self, forKey: PagingListData<C>.CodingKeys.resultType)
         self.result = try container.decodeIfPresent(ResultInfo.self, forKey: PagingListData<C>.CodingKeys.result)
         self.items = try container.decodeIfPresent(C.self, forKey: PagingListData<C>.CodingKeys.items)
@@ -62,26 +88,8 @@ public struct Paging: Codable {
     public let hasMore: Bool
 }
 
-// enum ResultType : String, Codable {
-//    case UserInsertResultCode = "UserInsertResultCodes"
-// }
+public typealias EmptyType = FncyEmptyType
 
-// 성공
-//          "resultType": "UserInsertResultCodes",
-//          "result": {
-//            "isSuccess": true,
-//            "code": "SUCCESS",
-//            "number": 200,
-//            "message": "SUCCESS"
-//          }
+public struct FncyEmptyType : Codable {}
 
-//  실패
-//        {
-//          "result" : {
-//            "code" : "ACCEPTED",
-//            "number" : 202,
-//            "message" : "ACCEPTED: 이미 동기화 되어있는 FID",
-//            "isSuccess" : false
-//          },
-//          "resultType" : "UserInsertResultCodes"
-//        }
+

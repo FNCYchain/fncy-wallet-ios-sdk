@@ -47,6 +47,14 @@ public struct FncyChainInfo: Codable {
     }
 }
 
+extension FncyChainInfo : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
+
+
 public struct MajorAssetInfo: Codable {
     public let majorAssetId: Int
     public let majorAssetSymbol: String
@@ -55,9 +63,23 @@ public struct MajorAssetInfo: Codable {
     public let majorAssetSymbolImg: String
 }
 
+extension MajorAssetInfo : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
+
+
 public struct NativeCoinInfo: Codable {
     public let nativeCoinDecimal: Double
     public let nativeCoinId: Double
     public let nativeCoinSymbolImg: String
     public let nativeCoinSymbol: String
+}
+
+extension NativeCoinInfo : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
 }

@@ -43,7 +43,7 @@ extension WalletAPI {
         return httpHeaders
     }
 
-    public func request<T: Codable>(_ service: APIRequest, authToken: String? = nil) async throws -> T {
+    public func request<T: ResultPresentable>(_ service: APIRequest, authToken: String? = nil) async throws -> T {
         guard let authToken = authToken else {
             throw FncyWalletError(reason: .tokenNotFound)
         }
@@ -61,9 +61,23 @@ extension WalletAPI {
 
         switch response.result {
         case .success(let data):
+            print("response result : ", response.result)
+            
+            try Self.checkResultValidation(data.data)
+            
             return data.data
         case .failure(let afError):
             throw afError
+        }
+    }
+    
+    fileprivate static func checkResultValidation(_ data : ResultPresentable) throws {
+        guard let result = data.result else { return }
+        
+        guard result.number == 200 else {
+            throw FncyWalletError(reason: result.code,
+                                  code: result.number,
+                                  message: result.message)
         }
     }
 }

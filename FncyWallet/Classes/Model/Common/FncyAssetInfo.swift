@@ -15,24 +15,17 @@
 import Foundation
 
 public struct FncyAssetInfo: Codable {
-    public let assetTypeDcd: AssetTypeDcd?
-    public let assetSymbol: String?
-    public let assetDecimal: Int
-    public let contractAddress: String?
-    public let chainNm: String?
     public let chainId: Int?
-    public let assetNm: String?
-    public let assetSymbolImg: String?
+    public let chainNm: String?
     public let assetId: Int
+    public let assetNm: String?
+    public let assetSymbol: String?
+    public let assetSymbolImg: String?
     public let assetType: String?
-    public let defaultAssetYn: Bool
-    public let cubeYn: Bool
-    public let assetButtonType: String?
-    public let assetButtonTypeDcd: String?
-    public let gcoinYn: Bool?
-    public let gameCode: String?
-    public let assetOrder: Int?
-    public let assetDesc: String?
+    public let assetTypeDcd: AssetTypeDcd?
+    public let contractAddress: String?
+    public let assetDecimal: Int
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.assetType = try container.decodeIfPresent(String.self, forKey: .assetType)
@@ -41,17 +34,15 @@ public struct FncyAssetInfo: Codable {
         self.assetDecimal = try container.decode(Int.self, forKey: .assetDecimal)
         self.contractAddress = try container.decodeIfPresent(String.self, forKey: .contractAddress)
         self.chainNm = try container.decodeIfPresent(String.self, forKey: .chainNm)
-        self.defaultAssetYn = try container.decodeIfPresent(String.self, forKey: .defaultAssetYn) == "Y"
         self.chainId = try container.decodeIfPresent(Int.self, forKey: .chainId)
         self.assetNm = try container.decodeIfPresent(String.self, forKey: .assetNm)
         self.assetSymbolImg = try container.decodeIfPresent(String.self, forKey: .assetSymbolImg)
-        self.cubeYn = try container.decodeIfPresent(String.self, forKey: .cubeYn) == "Y"
         self.assetId = try container.decode(Int.self, forKey: .assetId)
-        self.assetButtonType = try container.decodeIfPresent(String.self, forKey: .assetButtonType)
-        self.assetButtonTypeDcd = try container.decodeIfPresent(String.self, forKey: .assetButtonTypeDcd)
-        self.gcoinYn = try container.decodeIfPresent(String.self, forKey: .gcoinYn) == "Y"
-        self.gameCode = try container.decodeIfPresent(String.self, forKey: .gameCode)
-        self.assetOrder = try container.decodeIfPresent(Int.self, forKey: .assetOrder)
-        self.assetDesc = try container.decodeIfPresent(String.self, forKey: .assetDesc)
+    }
+}
+
+extension FncyAssetInfo : CustomStringConvertible  {
+    public var description: String {
+        return self.prettyJSON()
     }
 }

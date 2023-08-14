@@ -14,6 +14,8 @@
 
 import Foundation
 
-public struct AddressValidationResult: Codable {
+public struct AddressValidationResult: ResultPresentable {
+    public var resultType: String?
+    public var result: ResultInfo?
     public let isValid: Bool
 }

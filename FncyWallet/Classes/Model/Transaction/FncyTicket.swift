@@ -14,40 +14,56 @@
 
 import Foundation
 
-public struct TicketData: Codable {
-    public let resultType: String
-    public let result: ResultInfo
+public struct TicketData: ResultPresentable {
+    public let resultType: String?
+    public let result: ResultInfo?
     public let items: [FncyTicket]?
     public let web3Error: Web3Error?
     public let externalErrorMessage: String?
 }
 
-public struct Web3Error: Codable {
+extension TicketData : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
+public struct Web3Error: Codable, CustomStringConvertible {
     public let data: String
     public let message: String
     public let code: Int
+    
+    public var description: String {
+        return self.prettyJSON()
+    }
 }
 
 public struct FncyTicket: Codable {
-    public let txInput: String
+    public let wid: Int
+    public let signatureType: String
+    public let signatureTypeDcd: TicketType?
+    public let transferFrom: String
+    public let transferTo: String
     public let transferVal: Decimal
-    public let assetOrNftId: Int
+    public let txNonce: Decimal
     public let txGasPrice: Decimal
     public let txGasLimit: Decimal
-    public let transferMethod: String
-    public let transferTo: String
-    public let wid: Int
+    public let txInput: String
+    public let contractAddress: String?
     public let chainId: Int
-    public let txNonce: Decimal
+    public let assetId: Int
+    public let nftId: Int?
+    public let tokenId: Int?
+    public let maxPriorityPerGas: Decimal
+    public let maxFeePerGas: Decimal
+    public let assetOrNftId: Int
+    public let transferMethod: String
+    
+    
+    ///
     public let sendTransferNotiYn: Bool
     public let nativeCoinId: Int
-    public let maxFeePerGas: Decimal
-    public let transferFrom: String
-    public let maxPriorityPerGas: Decimal
-    public let assetId: Int
     public let ticketUuid: String?
-    public let signatureTypeDcd: TicketType?
-    public let signatureType: String
     public let displayTransferValKrw: String?
     public let displayFeeKrw: String?
     public let ticketHash: String?
@@ -57,9 +73,6 @@ public struct FncyTicket: Codable {
     public let createKst: TimeInterval?
     public let createUts: TimeInterval?
     public let displayFeeUsd: String?
-    public let nftId: Int?
-    public let contractAddress: String?
-    public let tokenId: Int?
     public let formerTicketUuid: String?
     public let walletSignature: String?
     public let contractParameters: String?
@@ -103,10 +116,24 @@ public struct FncyTicket: Codable {
     }
 }
 
-public struct MakeTicketResult: Codable {
+extension FncyTicket : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
+
+
+public struct MakeTicketResult: ResultPresentable {
     public let web3Error: Web3Error?
     public let ticketUuid: String?
-    public let resultType: String
+    public let resultType: String?
     public let result: ResultInfo?
     public let ticketHash: String
+}
+
+extension MakeTicketResult : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
 }

@@ -15,12 +15,18 @@
 import Foundation
 
 public struct FncyPrice: Codable {
-  public let krwPrice: Decimal
-  public let usdPrice: Decimal
-  public let btcPrice: Decimal
-  public let ethPrice: Decimal
-  public let displayKrwPrice: String
-  public let displayUsdPrice: String
-  public let displayBtcPrice: String
-  public let displayEthPrice: String
+    public let krwPrice: Decimal
+    public let usdPrice: Decimal
+    public let btcPrice: Decimal
+    public let ethPrice: Decimal
+    public let displayKrwPrice: String
+    public let displayUsdPrice: String
+    public let displayBtcPrice: String
+    public let displayEthPrice: String
+}
+
+extension FncyPrice : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
 }

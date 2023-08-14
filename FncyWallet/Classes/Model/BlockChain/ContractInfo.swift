@@ -40,3 +40,9 @@ public struct ContractInfo: Codable {
         self.assetDesc = try container.decodeIfPresent(String.self, forKey: .assetDesc)
     }
 }
+
+extension ContractInfo : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}

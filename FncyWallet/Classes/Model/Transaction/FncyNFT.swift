@@ -37,6 +37,14 @@ public struct FncyNFT: Codable {
     }
 }
 
+extension FncyNFT : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
+
+
 public struct NFTInfo: Codable {
     public let nftId: Int?
     public let nftNm: String
@@ -103,6 +111,14 @@ public struct NFTInfo: Codable {
         self.holderAuthYn = try container.decode(String.self, forKey: .holderAuthYn) == "Y"
     }
 }
+
+extension NFTInfo : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
+
 
 public struct NFTMetaInfo: Codable {
     struct NFTMetaInfoAttribute: Codable {

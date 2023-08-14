@@ -47,3 +47,9 @@ public struct FncyTransaction: Codable {
     public let txStDcd: TxStDcd?
     public let txId: String?
 }
+
+extension FncyTransaction : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
