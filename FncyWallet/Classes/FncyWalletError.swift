@@ -214,17 +214,37 @@ public enum FncyDataErrorReason {
     case emptySignature
     // 네트워크의 GasPriceInfo를 획득하지 못함
     case emptyGasPriceInfo
+    // 아직 보유한 지갑이 없습니다
+    case notFoundFncyWallet
+    // 총 자산 정보가 비어있음
+    case notFoundBalanceInfo
+    // 저장된 지갑 복구용 질문이 없습니다.
+    case notFoundResetQuestion
+    // ID로 자산을 조회할 수 없습니다.
+    case noAssetFoundByID
+    // 해당 SequenceID로 트랜잭션 기록을 조회 할 수 없습니다.
+    case noTransactionHistoryBySequenceID
 }
 
 extension FncyDataErrorReason : CustomStringConvertible {
     public var description: String {
         switch self {
         case .emptySignature:
-            return "Empty Signature"
+            return "EmptySignature"
         case .missingRsaPublickKey:
-            return "Fail to get 'RSA Public Key'"
+            return "MissingRSAPublicKey"
         case .emptyGasPriceInfo:
-            return "Empty 'Gas Price Info'"
+            return "EmptyGasPriceInfo"
+        case .notFoundFncyWallet:
+            return "NotFoundFncyWallet"
+        case .notFoundBalanceInfo:
+            return "NotFoundBalanceInfo"
+        case .notFoundResetQuestion:
+            return "NotFoundResetQuestion"
+        case .noAssetFoundByID:
+            return "NoAssetFoundByID"
+        case .noTransactionHistoryBySequenceID:
+            return "NoTransactionHistoryBySequenceID"
         }
     }
 }
@@ -237,8 +257,17 @@ public extension FncyWalletError {
         case .emptySignature:
             self = .invalidDataError(reason: reason, errorMessage: "Signature is nil or empty. Please check your authorization Token & pin number string.")
         case .emptyGasPriceInfo:
-            self = .invalidDataError(reason: reason, errorMessage: "Not found GasPriceInfo. Please check chainId of parameter")
-            
+            self = .invalidDataError(reason: reason, errorMessage: "Not found GasPriceInfo. Please check chainId of parameter.")
+        case .notFoundFncyWallet:
+            self = .invalidDataError(reason: reason, errorMessage: "Not found Wallet. Please make Wallet first.")
+        case .notFoundBalanceInfo:
+            self = .invalidDataError(reason: reason, errorMessage: "Not found Total Balance Info.")
+        case .notFoundResetQuestion:
+            self = .invalidDataError(reason: reason, errorMessage: "Not found Reset Question.")
+        case .noAssetFoundByID:
+            self = .invalidDataError(reason: reason, errorMessage: "No asset found for ID.")
+        case .noTransactionHistoryBySequenceID:
+            self = .invalidDataError(reason: reason, errorMessage: "No Transaction History found for History Sequence Id.")
         }
     }
 }

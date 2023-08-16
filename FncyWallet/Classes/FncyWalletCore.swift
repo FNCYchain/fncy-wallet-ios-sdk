@@ -228,9 +228,8 @@ public extension FncyWalletCore {
     }
 
     // 지갑 생성 - 복원용 질문 목록
-    // MARK: 파라미터OK💠
     func getQuestionList(pageNo: Int = 1,
-                         pageSize: Int = 20) async throws -> PagingListData<[FncyQuestion]> {
+                         pageSize: Int = 20) async throws -> [FncyQuestion] {
         let urlString = "\(self.baseUrl)/v1/questions"
 
         let params: [String: Any] = ["pageNo": pageNo,
@@ -239,9 +238,10 @@ public extension FncyWalletCore {
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .post,
                                     parameters: params)
-
-        return try await WALLETAPI.request(apiRequest,
+        let pagingListData:
+        PagingListData<[FncyQuestion]> = try await WALLETAPI.request(apiRequest,
                                            authToken: self.authToken)
+        return pagingListData.items ?? []
     }
 
     // 지갑 복구 질문답변 확인
@@ -302,8 +302,7 @@ public extension FncyWalletCore {
     }
 
     // 지갑 복원 - 사용자 선택 질문
-    // MARK: 파라미터OK💠
-    func getResetQuestion() async throws -> FncyQuestion? {
+    func getResetQuestion() async throws -> FncyQuestion {
         let urlString = self.baseUrl + "/v1/wallets/restore/questions"
 
         let apiRequest = APIRequest(requestUrl: urlString,
@@ -311,11 +310,13 @@ public extension FncyWalletCore {
 
         let result: ListData<[FncyQuestion]> = try await WALLETAPI.request(apiRequest,
                                                                            authToken: self.authToken)
-        return result.items?.first
+        
+        guard let question = result.items?.first else { throw FncyWalletError(reason: .notFoundResetQuestion)}
+        
+        return question
     }
 
     // 지갑 복원 - 질문 답변
-    // MARK: 파라미터OK💠
     func postResetQuestion(answer: String,
                            newPinNumber: String) async throws -> ResultData {
 
@@ -346,7 +347,7 @@ public extension FncyWalletCore {
     // MARK: - 지갑(지갑 조회)
     // 지갑 목록 조회
     // MARK: 파라미터OK💠
-    func getWallet() async throws -> FncyWallet? {
+    func getWallet() async throws -> FncyWallet {
         let urlString = self.baseUrl + "/v1/wallets"
 
         let apiRequest = APIRequest(requestUrl: urlString,
@@ -354,12 +355,17 @@ public extension FncyWalletCore {
 
         let result: ListData<[FncyWallet]> = try await WALLETAPI.request(apiRequest,
                                                                          authToken: self.authToken)
-        return result.items?.first
+        
+        guard let wallet = result.items?.first else {
+            throw FncyWalletError(reason: .notFoundFncyWallet)
+        }
+        
+        return wallet
     }
 
     // 지갑 총 자산 조회
     // MARK: 파라미터OK💠
-    func getWalletAllBalance(wid: Int) async throws -> FncyBalance? {
+    func getWalletAllBalance(wid: Int) async throws -> FncyBalance {
         let urlString = self.baseUrl + "/v1/wallets/\(wid)/balance"
 
         let apiRequest = APIRequest(requestUrl: urlString,
@@ -367,25 +373,31 @@ public extension FncyWalletCore {
 
         let result: ListData<[FncyBalance]> = try await WALLETAPI.request(apiRequest,
                                                                           authToken: self.authToken)
-        return result.items?.first
+        
+        guard let balance = result.items?.first else {
+            throw FncyWalletError(reason: .notFoundBalanceInfo)
+        }
+        
+        return balance
     }
 
     // 지갑 - 자산 목록 조회
     // MARK: 파라미터OK💠
-    func getAssetList(wid: Int) async throws -> PagingListData<[FncyAsset]> {
+    func getAssetList(wid: Int) async throws -> [FncyAsset] {
         let urlString = self.baseUrl + "/v1/wallets/\(wid)/assets-all"
 
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get)
-
-        return try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
+        let pagingListData
+        : PagingListData<[FncyAsset]> = try await WALLETAPI.request(apiRequest,
+                                                                    authToken: self.authToken)
+        return pagingListData.items ?? []
     }
 
     // 지갑 - 자산 단 건 조회
     // MARK: 파라미터OK💠
     func getAssetById(wid: Int,
-                      assetId: Int) async throws -> FncyAsset? {
+                      assetId: Int) async throws -> FncyAsset {
         let urlString = self.baseUrl + "/v1/wallets/\(wid)/assets/\(assetId)"
 
         let apiRequest = APIRequest(requestUrl: urlString,
@@ -393,32 +405,34 @@ public extension FncyWalletCore {
 
         let result: ListData<[FncyAsset]> = try await WALLETAPI.request(apiRequest,
                                                                         authToken: self.authToken)
-        return result.items?.first
+        guard let asset = result.items?.first else {
+            throw FncyWalletError(reason: .noAssetFoundByID)
+        }
+        return asset
     }
 
     // 지갑 - NFT 목록 조회
     // MARK: 파라미터OK💠
     func getNFTList(wid: Int,
                     pageNo: Int = 1,
-                    pageSize: Int = 6) async throws -> PagingListData<[FncyNFT]> {
+                    pageSize: Int = 6) async throws -> [FncyNFT] {
         let urlString = self.baseUrl + "/v1/wallets/\(wid)/nfts"
-
-        // let parameter
         let params = ["pageNo": pageNo,
                       "pageSize": pageSize]
 
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get,
                                     parameters: params)
-
-        return try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
+        let pagingListData
+        : PagingListData<[FncyNFT]> = try await WALLETAPI.request(apiRequest,
+                                                                  authToken: self.authToken)
+        return pagingListData.items ?? []
     }
 
     // 지갑 - NFT 단 건 조회
     // MARK: 파라미터OK💠
     func getNFTById(wid: Int,
-                    nftId: Int) async throws -> FncyNFT? {
+                    nftId: Int) async throws -> FncyNFT {
 
         let urlString = self.baseUrl + "/v1/wallets/\(wid)/nfts/\(nftId)"
 
@@ -427,7 +441,11 @@ public extension FncyWalletCore {
 
         let result: ListData<[FncyNFT]> = try await WALLETAPI.request(apiRequest,
                                                                       authToken: self.authToken)
-        return result.items?.first
+        guard let fncyNFT = result.items?.first else {
+            throw FncyWalletError(reason: .noAssetFoundByID)
+        }
+        
+        return fncyNFT
     }
 
     // MARK: - 트랜잭션
@@ -563,7 +581,7 @@ public extension FncyWalletCore {
                                 assetId: Int,
                                 pageNo: Int = 1,
                                 pageSize: Int = 6,
-                                filter: InOutDcd = .all) async throws -> PagingListData<[FncyTransaction]> {
+                                filter: InOutDcd = .all) async throws -> [FncyTransaction] {
         let urlString = "\(self.baseUrl)/v1/wallets/\(wid)/assets/transfers"
 
         var parameters: [String: Any] = ["assetId": assetId,
@@ -577,21 +595,26 @@ public extension FncyWalletCore {
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get,
                                     parameters: parameters)
-        return try await WALLETAPI.request(apiRequest,
+        
+        let pagingListData: PagingListData<[FncyTransaction]> = try await WALLETAPI.request(apiRequest,
                                            authToken: self.authToken)
+        
+        return pagingListData.items ?? []
     }
 
     // ERC20 자산 전송 히스토리 상세
     func getTransferHistoryDetail(wid: Int,
-                                  historySeq: Int) async throws -> FncyTransaction? {
+                                  historySeq: Int) async throws -> FncyTransaction {
         let urlString = "\(self.baseUrl)/v2/wallets/\(wid)/assets/transfers/\(historySeq)"
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get)
         
         let result: ListData<[FncyTransaction]> = try await WALLETAPI.request(apiRequest,
                                                                               authToken: self.authToken)
-        
-        return result.items?.first
+        guard let fncyTransaction = result.items?.first else {
+            throw FncyWalletError(reason: .noTransactionHistoryBySequenceID)
+        }
+        return fncyTransaction
     }
 
     // MARK: - 트랜잭션(기타)
@@ -628,3 +651,4 @@ public extension FncyWalletCore {
         return signature
     }
 }
+
