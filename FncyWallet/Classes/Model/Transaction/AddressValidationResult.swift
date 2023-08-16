@@ -14,7 +14,7 @@
 
 import Foundation
 
-public struct AddressValidationResult: ResultPresentable {
+internal struct AddressValidationResult: ResultPresentable {
     public var resultType: String?
     public var result: ResultInfo?
     public let isValid: Bool

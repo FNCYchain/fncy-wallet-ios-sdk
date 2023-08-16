@@ -434,7 +434,7 @@ public extension FncyWalletCore {
     // MARK: - 트랜잭션(트랜잭션 생성)
 
     // 전송 티켓 확인
-    func estimateTicket(_ walletId: Int,
+    func estimateTicket(wid: Int,
                         chainId: Int,
                         signatureType: TicketType,
                         toAddress: String,
@@ -450,7 +450,7 @@ public extension FncyWalletCore {
 
         let urlString = self.baseUrl + "/v2/transfers/estimate"
         var parameters: [String: Any] = ["chainId": chainId,
-                                          "wid": walletId,
+                                          "wid": wid,
                                           "signatureType": signatureType.id,
                                           "transferTo": toAddress]
 
@@ -512,8 +512,8 @@ public extension FncyWalletCore {
     }
 
     // 트랜잭션 전송
-    func sendTransaction(ticketUuid: String,
-                         pinNumber: String) async throws -> TicketData {
+    func sendTicket(ticketUuid: String,
+                    pinNumber: String) async throws -> TicketData {
 
         guard let rsaPublicKey = try await self.getRSAKey() else {
             throw FncyWalletError.someError

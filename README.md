@@ -21,9 +21,6 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 ## Installation
 
 **Podfile**
-FncyWallet is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
 ```ruby
 pod 'FncyWallet'
 ```
@@ -41,10 +38,77 @@ let package = Package(
 )
 ```
 
+## Documentation
+
+
+
+## Example Usage
+
+### Initialization  
+
+```swift
+import FncyWallet
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    var window: UIWindow?
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Override point for customization after application launch.
+        
+        FncyWalletSDK.initSDK(apiKey: "${apikey}",
+                              baseURL: "${baseURL}")
+        
+        return true
+    }
+```
+
+### Get Wallet
+
+In the imports section:
+```swift
+import FncyWallet
+```
+     
+```swift
+    
+    let authToken = "authorizationToken"
+    let fncyWallet = FncyWalletCore(authToken: authToken)
+    
+    guard let walletData = try await fncyWallet.getWallet() else { return }
+    
+    print(walletData.walletAddress)  
+```
+
+### Get GasPrice Info
+```swift
+    let authToken = "authorizationToken"
+    let fncyWallet = FncyWalletCore(authToken: authToken)
+    
+    guard let gasPriceInfo = try await fncyWallet.getGasPrice(chainId: 3) else { return }
+    
+    print(gasPriceInfo)
+```
+ 
+
+### Send Fncy 
+```swift
+    let authToken = "authorizationToken"
+    let fncyWallet = FncyWalletCore(authToken: authToken)
+    
+    guard let walletData = try await fncyWallet.getWallet() else { return }
+    
+    guard let gasPriceInfo = try await fncyWallet.getGasPrice(chainId: 3) else { return }
+    
+    guard let ticketInfo = try await fncyWallet.makeTicket(wid: walletData.wid, chainId: 3, signatureType: .assetTransfer, toAddress: "0x1234...", transferVal: "10000000000000000", txGasPrice: gasPriceInfo.middleGasPrice, assetId: 6, txGasLimit: 21000)
+    
+    guard let sendResult = try await fncyWallet.sendTicket(ticketUuids: ticketInfo.ticketuuid, pinNumber: "000000") 
+    
+    // Done
+```
+
+
 ## Author
 
 Metaverse World, Inc
-
-## License
-
-FncyWallet is available under the Apache License, Version 2.0(the "License"). See the LICENSE file for more info.

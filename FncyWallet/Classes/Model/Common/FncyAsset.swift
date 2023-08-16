@@ -19,23 +19,10 @@ public struct FncyAsset: Codable {
     public let chainId: Int
     public let assetSeq: Int
     public let balance: Decimal?
-    public let balancePlainString : String? // ??
+    public let balancePlainString : String?
     public let displayBalance: String?
     public let assetInfo: FncyAssetInfo
     public let prices: FncyPrice
-    
-    
-    
-    
-    
-    
-
-    
-//    public let displayYn: String?
-//
-//    public let assetOrd: Int
-//    public let gameNm: String?
-//    public let gameCode: String?
 }
 
 
