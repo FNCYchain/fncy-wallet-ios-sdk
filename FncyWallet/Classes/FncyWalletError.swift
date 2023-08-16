@@ -224,6 +224,8 @@ public enum FncyDataErrorReason {
     case noAssetFoundByID
     // 해당 SequenceID로 트랜잭션 기록을 조회 할 수 없습니다.
     case noTransactionHistoryBySequenceID
+    // 컨트랙트 정보를 조회할 수 없습니다.
+    case noFoundContractInfo
 }
 
 extension FncyDataErrorReason : CustomStringConvertible {
@@ -245,6 +247,8 @@ extension FncyDataErrorReason : CustomStringConvertible {
             return "NoAssetFoundByID"
         case .noTransactionHistoryBySequenceID:
             return "NoTransactionHistoryBySequenceID"
+        case .noFoundContractInfo:
+            return "NoFoundContractInfo"
         }
     }
 }
@@ -268,6 +272,8 @@ public extension FncyWalletError {
             self = .invalidDataError(reason: reason, errorMessage: "No asset found for ID.")
         case .noTransactionHistoryBySequenceID:
             self = .invalidDataError(reason: reason, errorMessage: "No Transaction History found for History Sequence Id.")
+        case .noFoundContractInfo:
+            self = .invalidDataError(reason: reason, errorMessage: "No Smart Contract Info found for NetworkID and Contract Address.")
         }
     }
 }
