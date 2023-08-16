@@ -25,7 +25,6 @@ public struct FncyAsset: Codable {
     public let prices: FncyPrice
 }
 
-
 extension FncyAsset : CustomStringConvertible {
     public var description: String {
         return self.prettyJSON()

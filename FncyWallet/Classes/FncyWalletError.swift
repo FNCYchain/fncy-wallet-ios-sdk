@@ -15,16 +15,20 @@
 import Foundation
 
 public enum FncyWalletError: Error {
-    case clientFailed(reason: ClientFailureReason, errorMessage: String?)
+    // 클라이언트 측 오류
+    case clientFailed(reason: ClientFailureReason,
+                      errorMessage: String?)
+    // 서버 응답 오류
     case apiFailed(reason: ApiFailureReason,
                    apiStatusCode: Int,
                    errorMessage: String)
-    case someError
-    // 1. failToGetRSAKey RSAKey가 오염되었거나, 서버에서 잘못된 응답을 보내고있을 경우
+    // 응답 데이터가 유효하지 않음
+    case invalidDataError(reason: FncyDataErrorReason,
+                          errorMessage: String?)
 }
 
 extension FncyWalletError {
-    public init(reason: ClientFailureReason = .unknown, message: String? = nil) {
+    internal init(reason: ClientFailureReason = .unknown, message: String? = nil) {
         switch reason {
         case .mustInitApiKey:
             self = .clientFailed(reason: reason, errorMessage: "initSDK(apiKey:) must be initialized.")
@@ -48,13 +52,13 @@ extension FncyWalletError : CustomStringConvertible {
         case .apiFailed(let reason, let code, let errorMessage):
             return String(format: "[WalletAPI Error(%d)]: %@ \n%@", code, reason.rawValue, errorMessage)
             
-        case .someError:
-            return "Some ERrror"
+        case .invalidDataError(let reason, let errorMessage):
+            return String(format: "[Data Error] %@ : %@", reason.description, errorMessage ?? "")
         }
     }
 }
 
-public enum ClientFailureReason : CustomStringConvertible {
+public enum ClientFailureReason {
     /// SDK 초기화를 하지 않음
     case mustInitApiKey
     /// API 요청에 사용할 토큰이 없음
@@ -65,7 +69,9 @@ public enum ClientFailureReason : CustomStringConvertible {
     case pinStringIsTooLong
     /// 알 수 없는 에러
     case unknown
-    
+}
+
+extension ClientFailureReason : CustomStringConvertible {
     public var description: String {
         switch self {
         case .mustInitApiKey:
@@ -82,10 +88,11 @@ public enum ClientFailureReason : CustomStringConvertible {
     }
 }
 
+
 extension FncyWalletError {
-    public init(reason: ApiFailureReason = .unknown,
-                code: Int = -9999,
-                message: String) {
+    internal init(reason: ApiFailureReason = .unknown,
+                  code: Int = -9999,
+                  message: String) {
         self = .apiFailed(reason: reason,
                           apiStatusCode: code,
                           errorMessage: message)
@@ -192,6 +199,48 @@ public enum ApiFailureReason : String, Codable {
     case unauthorized = "UNAUTHORIZED"
     /// 403, FORBIDDEN: 지갑 복구 답변 불일치, Key Chain 조회 불가
     case missMatchUserRestoreAnswer = "MISS_MATCH_USER_RESTORE_ANSWER"
+}
+
+
+
+
+
+
+
+public enum FncyDataErrorReason {
+    // RSA Public Key가 유효하지 않음
+    case missingRsaPublickKey
+    // Signature가 nil 이거나 빈 문자열
+    case emptySignature
+    // 네트워크의 GasPriceInfo를 획득하지 못함
+    case emptyGasPriceInfo
+}
+
+extension FncyDataErrorReason : CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .emptySignature:
+            return "Empty Signature"
+        case .missingRsaPublickKey:
+            return "Fail to get 'RSA Public Key'"
+        case .emptyGasPriceInfo:
+            return "Empty 'Gas Price Info'"
+        }
+    }
+}
+
+public extension FncyWalletError {
+    internal init(reason : FncyDataErrorReason) {
+        switch reason {
+        case .missingRsaPublickKey:
+            self = .invalidDataError(reason: reason, errorMessage: "RSA Public Key is nil or empty. Please check your authorization Token.")
+        case .emptySignature:
+            self = .invalidDataError(reason: reason, errorMessage: "Signature is nil or empty. Please check your authorization Token & pin number string.")
+        case .emptyGasPriceInfo:
+            self = .invalidDataError(reason: reason, errorMessage: "Not found GasPriceInfo. Please check chainId of parameter")
+            
+        }
+    }
 }
 
 public enum Web3ErrorReason {

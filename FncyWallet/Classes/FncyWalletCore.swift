@@ -153,7 +153,7 @@ public extension FncyWalletCore {
         try FncyUtil.pinStringValidationCheck(pinNumber)
 
         guard let rsaPublicKey = try await self.getRSAKey() else {
-            throw FncyWalletError.someError
+            throw FncyWalletError(reason: .missingRsaPublickKey)
         }
 
         let rsaEncryptUserPin = try pinNumber.data.sha256().toHexString().encryptRSA(rsaPublicKey)
@@ -180,7 +180,7 @@ public extension FncyWalletCore {
                                     answer: String,
                                     pinNumber: String) async throws -> ResultData {
         guard let rsaPublicKey = try await self.getRSAKey() else {
-            throw FncyWalletError.someError
+            throw FncyWalletError(reason: .missingRsaPublickKey)
         }
         let rsaEncryptUserQuestion = try String(questionSeq).data.sha256()
             .toHexString().encryptRSA(rsaPublicKey)
@@ -210,7 +210,7 @@ public extension FncyWalletCore {
         try FncyUtil.pinStringValidationCheck(pinNumber)
 
         guard let rsaPublicKey = try await self.getRSAKey() else {
-            throw FncyWalletError.someError
+            throw FncyWalletError(reason: .missingRsaPublickKey)
         }
 
         let urlString = self.baseUrl + "/v1/wallets/pin-check?excludeHistoryYn=\(excludeHistoryYn ? "Y" : "N")"
@@ -248,7 +248,7 @@ public extension FncyWalletCore {
     func checkResetAnswer(answer: String) async throws -> ResultData {
 
         guard let rsaPublicKey = try await self.getRSAKey() else {
-            throw FncyWalletError.someError
+            throw FncyWalletError(reason: .missingRsaPublickKey)
         }
 
         let rsaEncryptedHashedAnswer = try answer.lowercased()
@@ -280,7 +280,7 @@ public extension FncyWalletCore {
         try FncyUtil.pinStringValidationCheck(newPinNumber)
 
         guard let rsaPublicKey = try await self.getRSAKey() else {
-            throw FncyWalletError.someError
+            throw FncyWalletError(reason: .missingRsaPublickKey)
         }
 
         let rsaEncryptUserPin = try oldPinNumber.data.sha256().toHexString().encryptRSA(rsaPublicKey)
@@ -322,7 +322,7 @@ public extension FncyWalletCore {
         try FncyUtil.pinStringValidationCheck(newPinNumber)
 
         guard let rsaPublicKey = try await self.getRSAKey() else {
-            throw FncyWalletError.someError
+            throw FncyWalletError(reason: .missingRsaPublickKey)
         }
 
         let rsaEncryptUserAnswer = try answer.data.sha256().toHexString().encryptRSA(rsaPublicKey)
@@ -472,17 +472,17 @@ public extension FncyWalletCore {
     }
 
     // 전송 티켓 생성
-    func makeTicket(_ wid: Int,
+    func makeTicket(wid: Int,
+                    chainId: Int,
                     signatureType: TicketType,
                     toAddress: String,
                     transferVal: String,
                     txGasPrice: String? = nil,
                     txInput: String? = nil,
-                    contractAddress: String? = nil,
                     assetId: Int? = nil,
                     nftId: Int? = nil,
                     tokenId: Int? = nil,
-                    chainId: Int,
+                    contractAddress: String? = nil,
                     maxPriorityPerGas: String? = nil,
                     maxFeePerGas: String? = nil,
                     txGasLimit: String? = nil) async throws -> MakeTicketResult {
@@ -516,7 +516,7 @@ public extension FncyWalletCore {
                     pinNumber: String) async throws -> TicketData {
 
         guard let rsaPublicKey = try await self.getRSAKey() else {
-            throw FncyWalletError.someError
+            throw FncyWalletError(reason: .missingRsaPublickKey)
         }
 
         let rsaEncryptedHashedPin = try pinNumber.data.sha256().toHexString().encryptRSA(rsaPublicKey)
@@ -596,14 +596,13 @@ public extension FncyWalletCore {
 
     // MARK: - 트랜잭션(기타)
     // 지갑 서명
-    // MARK: ✅
     func postWalletSign(wid: Int,
                         dataToSign: String,
                         signType: String? = nil,
-                        userWalletPin: String) async throws -> String? {
+                        userWalletPin: String) async throws -> String {
 
         guard let rsaPublicKey = try await self.getRSAKey() else {
-            throw FncyWalletError.someError
+            throw FncyWalletError(reason: .missingRsaPublickKey)
         }
 
         let rsaEncryptedHashedPin = try userWalletPin.data.sha256().toHexString().encryptRSA(rsaPublicKey)
@@ -619,8 +618,13 @@ public extension FncyWalletCore {
                                     method: .post,
                                     parameters: params)
 
-        let result: ListData<EmptyType> = try await WALLETAPI.request(apiRequest,
-                                                                      authToken: self.authToken)
-        return result.signature
+        let result: WalletSignResult = try await WALLETAPI.request(apiRequest,
+                                                                   authToken: self.authToken)
+        
+        guard let signature = result.signature else {
+            throw FncyWalletError(reason: .emptySignature)
+        }
+        
+        return signature
     }
 }

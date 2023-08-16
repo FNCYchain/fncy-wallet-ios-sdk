@@ -19,3 +19,9 @@ internal struct AddressValidationResult: ResultPresentable {
     public var result: ResultInfo?
     public let isValid: Bool
 }
+
+extension AddressValidationResult : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}

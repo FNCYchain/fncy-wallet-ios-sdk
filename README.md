@@ -20,12 +20,24 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-**Podfile**
+### **Podfile**
 ```ruby
-pod 'FncyWallet'
+#Podfile 
+use_frameworks!
+
+platform :ios, '14.0'
+
+target 'YOUR_TARGET_NAME' do
+    pod 'FncyWallet'
+end
+```
+Replace `YOUR_TARGET_NAME` and then, in the `Podfile` directory, type:
+
+```bash
+$ pod install
 ```
 
-**Package.swift**
+### **Package.swift**
 ```swift
 let package = Package(
   name: "MyPackage",
@@ -38,13 +50,9 @@ let package = Package(
 )
 ```
 
-## Documentation
+## Getting Started
 
-
-
-## Example Usage
-
-### Initialization  
+### initialize Fncy Wallet SDK  
 
 ```swift
 import FncyWallet
@@ -64,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 ```
 
-### Get Wallet
+### Get Wallet Address
 
 In the imports section:
 ```swift
@@ -72,43 +80,18 @@ import FncyWallet
 ```
      
 ```swift
-    
     let authToken = "authorizationToken"
     let fncyWallet = FncyWalletCore(authToken: authToken)
     
-    guard let walletData = try await fncyWallet.getWallet() else { return }
+    let walletData = try await fncyWallet.getWallet()
     
     print(walletData.walletAddress)  
 ```
 
-### Get GasPrice Info
-```swift
-    let authToken = "authorizationToken"
-    let fncyWallet = FncyWalletCore(authToken: authToken)
-    
-    guard let gasPriceInfo = try await fncyWallet.getGasPrice(chainId: 3) else { return }
-    
-    print(gasPriceInfo)
-```
+## Documentation 
+
+* [GitBook : Fncy Wallet SDK for iOS](https://app.gitbook.com/o/sxbvsaQu6S0zvfR1DBLL/s/rtEQIDnbkvSB2krcokD0/for-developers/fncy-mobile-app/fncy-wallet-sdk/ios)
  
-
-### Send Fncy 
-```swift
-    let authToken = "authorizationToken"
-    let fncyWallet = FncyWalletCore(authToken: authToken)
-    
-    guard let walletData = try await fncyWallet.getWallet() else { return }
-    
-    guard let gasPriceInfo = try await fncyWallet.getGasPrice(chainId: 3) else { return }
-    
-    guard let ticketInfo = try await fncyWallet.makeTicket(wid: walletData.wid, chainId: 3, signatureType: .assetTransfer, toAddress: "0x1234...", transferVal: "10000000000000000", txGasPrice: gasPriceInfo.middleGasPrice, assetId: 6, txGasLimit: 21000)
-    
-    guard let sendResult = try await fncyWallet.sendTicket(ticketUuids: ticketInfo.ticketuuid, pinNumber: "000000") 
-    
-    // Done
-```
-
-
 ## Author
 
 Metaverse World, Inc

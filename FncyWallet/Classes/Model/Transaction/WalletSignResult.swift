@@ -14,6 +14,8 @@
 
 import Foundation
 
-public struct WalletSignResult: Codable {
+public struct WalletSignResult: ResultPresentable {
+    public var resultType: String?
+    public var result: ResultInfo?
     public let signature: String?
 }
