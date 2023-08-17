@@ -16,7 +16,7 @@ import Foundation
 
 /// 프로젝트 전역 SDK
 final public class FncyWalletSDK {
-    private let _version = "0.1.0"
+    private let _version = "0.1.4"
     /// FncyWalletSDK 의 공유 인스턴스
     public static let shared = FncyWalletSDK()
     private var _apikey: String?
