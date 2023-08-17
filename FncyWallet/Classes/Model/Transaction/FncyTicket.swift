@@ -14,70 +14,83 @@
 
 import Foundation
 
-public struct TicketData: Codable {
-    public let resultType: String
-    public let result: ResultInfo
+public struct TicketData: ResultPresentable {
+    public let resultType: String?
+    public let result: ResultInfo?
     public let items: [FncyTicket]?
     public let web3Error: Web3Error?
     public let externalErrorMessage: String?
 }
 
-public struct Web3Error: Codable {
+//
+
+extension TicketData : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
+public struct Web3Error: Codable, CustomStringConvertible {
     public let data: String
     public let message: String
     public let code: Int
+    
+    public var description: String {
+        return self.prettyJSON()
+    }
 }
 
 public struct FncyTicket: Codable {
-    public let txInput: String
-    public let transferVal: Decimal
-    public let assetOrNftId: Int
-    public let txGasPrice: Decimal
-    public let txGasLimit: Decimal
-    public let transferMethod: String
-    public let transferTo: String
     public let wid: Int
-    public let chainId: Int
-    public let txNonce: Decimal
-    public let sendTransferNotiYn: Bool
-    public let nativeCoinId: Int
-    public let maxFeePerGas: Decimal
-    public let transferFrom: String
-    public let maxPriorityPerGas: Decimal
-    public let assetId: Int
-    public let ticketUuid: String?
+    public let signatureType: String //
     public let signatureTypeDcd: TicketType?
-    public let signatureType: String
-    public let displayTransferValKrw: String?
-    public let displayFeeKrw: String?
-    public let ticketHash: String?
-    public let displayFee: String?
-    public let displayTransferVal: String?
-    public let displayTransferValUsd: String?
-    public let createKst: TimeInterval?
-    public let createUts: TimeInterval?
-    public let displayFeeUsd: String?
-    public let nftId: Int?
+    public let transferFrom: String
+    public let transferTo: String
+    public let transferVal: Decimal //
+    public let txNonce: Decimal
+    public let txGasPrice: Decimal //
+    public let txGasLimit: Decimal //
+    public let txInput: String //
     public let contractAddress: String?
+    public let chainId: Int
+    public let assetId: Int
+    public let nftId: Int?
     public let tokenId: Int?
-    public let formerTicketUuid: String?
-    public let walletSignature: String?
-    public let contractParameters: String?
+    public let maxPriorityPerGas: Decimal
+    public let maxFeePerGas: Decimal
+//    public let assetOrNftId: Int
+//    public let transferMethod: String
+
+//    public let sendTransferNotiYn: Bool
+//    public let nativeCoinId: Int
+    public let ticketUuid: String?
+//    public let displayTransferValKrw: String?
+//    public let displayFeeKrw: String?
+    public let ticketHash: String?
+//    public let displayFee: String?
+//    public let displayTransferVal: String?
+//    public let displayTransferValUsd: String?
+//    public let createKst: TimeInterval?
+//    public let createUts: TimeInterval?
+//    public let displayFeeUsd: String?
+//    public let formerTicketUuid: String?
+//    public let walletSignature: String?
+//    public let contractParameters: String?
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.txInput = try container.decode(String.self, forKey: .txInput)
         self.transferVal = try container.decode(Decimal.self, forKey: .transferVal)
-        self.assetOrNftId = try container.decode(Int.self, forKey: .assetOrNftId)
+//        self.assetOrNftId = try container.decode(Int.self, forKey: .assetOrNftId)
         self.txGasPrice = try container.decode(Decimal.self, forKey: .txGasPrice)
         self.txGasLimit = try container.decode(Decimal.self, forKey: .txGasLimit)
-        self.transferMethod = try container.decode(String.self, forKey: .transferMethod)
+//        self.transferMethod = try container.decode(String.self, forKey: .transferMethod)
         self.transferTo = try container.decode(String.self, forKey: .transferTo)
         self.wid = try container.decode(Int.self, forKey: .wid)
         self.chainId = try container.decode(Int.self, forKey: .chainId)
         self.txNonce = try container.decode(Decimal.self, forKey: .txNonce)
-        self.sendTransferNotiYn = try container.decodeIfPresent(String.self, forKey: .sendTransferNotiYn) == "Y"
-        self.nativeCoinId = try container.decode(Int.self, forKey: .nativeCoinId)
+//        self.sendTransferNotiYn = try container.decodeIfPresent(String.self, forKey: .sendTransferNotiYn) == "Y"
+//        self.nativeCoinId = try container.decode(Int.self, forKey: .nativeCoinId)
         self.maxFeePerGas = try container.decode(Decimal.self, forKey: .maxFeePerGas)
         self.transferFrom = try container.decode(String.self, forKey: .transferFrom)
         self.maxPriorityPerGas = try container.decode(Decimal.self, forKey: .maxPriorityPerGas)
@@ -85,28 +98,42 @@ public struct FncyTicket: Codable {
         self.ticketUuid = try container.decodeIfPresent(String.self, forKey: .ticketUuid)
         self.signatureTypeDcd = try container.decodeIfPresent(TicketType.self, forKey: .signatureTypeDcd)
         self.signatureType = try container.decode(String.self, forKey: .signatureType)
-        self.displayTransferValKrw = try container.decodeIfPresent(String.self, forKey: .displayTransferValKrw)
-        self.displayFeeKrw = try container.decodeIfPresent(String.self, forKey: .displayFeeKrw)
+//        self.displayTransferValKrw = try container.decodeIfPresent(String.self, forKey: .displayTransferValKrw)
+//        self.displayFeeKrw = try container.decodeIfPresent(String.self, forKey: .displayFeeKrw)
         self.ticketHash = try container.decodeIfPresent(String.self, forKey: .ticketHash)
-        self.displayFee = try container.decodeIfPresent(String.self, forKey: .displayFee)
-        self.displayTransferVal = try container.decodeIfPresent(String.self, forKey: .displayTransferVal)
-        self.displayTransferValUsd = try container.decodeIfPresent(String.self, forKey: .displayTransferValUsd)
-        self.createKst = try container.decodeIfPresent(TimeInterval.self, forKey: .createKst)
-        self.createUts = try container.decodeIfPresent(TimeInterval.self, forKey: .createUts)
-        self.displayFeeUsd = try container.decodeIfPresent(String.self, forKey: .displayFeeUsd)
+//        self.displayFee = try container.decodeIfPresent(String.self, forKey: .displayFee)
+//        self.displayTransferVal = try container.decodeIfPresent(String.self, forKey: .displayTransferVal)
+//        self.displayTransferValUsd = try container.decodeIfPresent(String.self, forKey: .displayTransferValUsd)
+//        self.createKst = try container.decodeIfPresent(TimeInterval.self, forKey: .createKst)
+//        self.createUts = try container.decodeIfPresent(TimeInterval.self, forKey: .createUts)
+//        self.displayFeeUsd = try container.decodeIfPresent(String.self, forKey: .displayFeeUsd)
         self.nftId = try container.decodeIfPresent(Int.self, forKey: .nftId)
         self.contractAddress = try container.decodeIfPresent(String.self, forKey: .contractAddress)
         self.tokenId = try container.decodeIfPresent(Int.self, forKey: .tokenId)
-        self.formerTicketUuid = try container.decodeIfPresent(String.self, forKey: .formerTicketUuid)
-        self.walletSignature = try container.decodeIfPresent(String.self, forKey: .walletSignature)
-        self.contractParameters = try container.decodeIfPresent(String.self, forKey: .contractParameters)
+//        self.formerTicketUuid = try container.decodeIfPresent(String.self, forKey: .formerTicketUuid)
+//        self.walletSignature = try container.decodeIfPresent(String.self, forKey: .walletSignature)
+//        self.contractParameters = try container.decodeIfPresent(String.self, forKey: .contractParameters)
     }
 }
 
-public struct MakeTicketResult: Codable {
+extension FncyTicket : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
+
+
+public struct MakeTicketResult: ResultPresentable {
     public let web3Error: Web3Error?
     public let ticketUuid: String?
-    public let resultType: String
+    public let resultType: String?
     public let result: ResultInfo?
     public let ticketHash: String
+}
+
+extension MakeTicketResult : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
 }

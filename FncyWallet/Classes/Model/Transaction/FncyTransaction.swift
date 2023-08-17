@@ -16,7 +16,7 @@ import Foundation
 
 public struct FncyTransaction: Codable {
     public let assetInfo: FncyAssetInfo
-    public let blockNumber: Int?
+    public let blockNumber: Decimal?
     public let txFee: Decimal?
     public let transferEventDcd: TransferEvent
     public let transferSeq: Int
@@ -27,7 +27,6 @@ public struct FncyTransaction: Codable {
     public let transferEventIndex: Int?
     public let transferMethod: String
     public let historyUts: TimeInterval
-    public let fid: Int?
     public let historySeq: Int
     public let transferEvent: String
     public let txIndex: Int?
@@ -46,4 +45,10 @@ public struct FncyTransaction: Codable {
     public let historyKst: TimeInterval?
     public let txStDcd: TxStDcd?
     public let txId: String?
+}
+
+extension FncyTransaction : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
 }

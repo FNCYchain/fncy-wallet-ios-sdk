@@ -21,13 +21,31 @@ public struct ResultInfo: Codable {
     public let number: Int
 }
 
-public struct ResultData: Codable {
-    public let resultType: String
-    public let result: ResultInfo
+extension ResultInfo : CustomStringConvertible  {
+    public var description: String {
+        return self.prettyJSON()
+    }
 }
 
-public struct WalletMakeResultData: Codable {
-    public let resultType: String
-    public let result: ResultInfo
+public struct ResultData: ResultPresentable {
+    public let resultType: String?
+    public let result: ResultInfo?
+}
+
+extension ResultData : CustomStringConvertible  {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
+public struct WalletMakeResultData: ResultPresentable {
+    public var resultType: String?
+    public var result: ResultInfo?
     public let wid: Int
+}
+
+extension WalletMakeResultData : CustomStringConvertible  {
+    public var description: String {
+        return self.prettyJSON()
+    }
 }

@@ -20,15 +20,24 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-**Podfile**
-FncyWallet is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
+### **Podfile**
 ```ruby
-pod 'FncyWallet'
+#Podfile 
+use_frameworks!
+
+platform :ios, '14.0'
+
+target 'YOUR_TARGET_NAME' do
+    pod 'FncyWallet'
+end
+```
+Replace `YOUR_TARGET_NAME` and then, in the `Podfile` directory, type:
+
+```bash
+$ pod install
 ```
 
-**Package.swift**
+### **Package.swift**
 ```swift
 let package = Package(
   name: "MyPackage",
@@ -41,10 +50,48 @@ let package = Package(
 )
 ```
 
+## Getting Started
+
+### initialize Fncy Wallet SDK  
+
+```swift
+import FncyWallet
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    var window: UIWindow?
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Override point for customization after application launch.
+        
+        FncyWalletSDK.initSDK(apiKey: "${apikey}",
+                              baseURL: "${baseURL}")
+        
+        return true
+    }
+```
+
+### Get Wallet Address
+
+In the imports section:
+```swift
+import FncyWallet
+```
+     
+```swift
+    let authToken = "authorizationToken"
+    let fncyWallet = FncyWalletCore(authToken: authToken)
+    
+    let walletData = try await fncyWallet.getWallet()
+    
+    print(walletData.walletAddress)  
+```
+
+## Documentation 
+
+* [GitBook : Fncy Wallet SDK for iOS](https://app.gitbook.com/o/sxbvsaQu6S0zvfR1DBLL/s/rtEQIDnbkvSB2krcokD0/for-developers/fncy-mobile-app/fncy-wallet-sdk/ios)
+ 
 ## Author
 
 Metaverse World, Inc
-
-## License
-
-FncyWallet is available under the Apache License, Version 2.0(the "License"). See the LICENSE file for more info.

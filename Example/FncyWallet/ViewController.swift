@@ -22,17 +22,17 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        self.fncyWallet = FncyWalletCore(authToken: "someAuthorizationToken")
-        
-        Task {
-            do {
-                let gasPriceInfo = try await self.fncyWallet.getGasPrice(chainID: 3)
-                print(String(describing: gasPriceInfo))
-                
-            } catch(let error) {
-                print(String(describing: error))
-            }
-        }
+//        self.fncyWallet = FncyWalletCore(authToken: "someAuthorizationToken")
+//
+//        Task {
+//            do {
+//                let gasPriceInfo = try await self.fncyWallet.getGasPrice(chainID: 3)
+//                print(String(describing: gasPriceInfo))
+//
+//            } catch(let error) {
+//                print(String(describing: error))
+//            }
+//        }
         
     }
 

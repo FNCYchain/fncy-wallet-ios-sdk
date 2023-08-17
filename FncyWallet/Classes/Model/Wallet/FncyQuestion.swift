@@ -20,3 +20,9 @@ public struct FncyQuestion: Codable {
     public let questionJp: String
     public let questionSeq: Int
 }
+
+extension FncyQuestion : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
