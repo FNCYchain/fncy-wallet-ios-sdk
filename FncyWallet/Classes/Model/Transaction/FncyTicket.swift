@@ -14,6 +14,19 @@
 
 import Foundation
 
+public struct SendTicketResultData : ResultPresentable {
+    public let resultType: String?
+    public let result: ResultInfo?
+    public let txId : String?
+}
+
+extension SendTicketResultData : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
+
 public struct TicketData: ResultPresentable {
     public let resultType: String?
     public let result: ResultInfo?
@@ -21,8 +34,6 @@ public struct TicketData: ResultPresentable {
     public let web3Error: Web3Error?
     public let externalErrorMessage: String?
 }
-
-//
 
 extension TicketData : CustomStringConvertible {
     public var description: String {

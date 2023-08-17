@@ -530,7 +530,7 @@ public extension FncyWalletCore {
 
     // 트랜잭션 전송
     func sendTicket(ticketUuid: String,
-                    pinNumber: String) async throws -> TicketData {
+                    pinNumber: String) async throws -> SendTicketResultData {
 
         let rsaPublicKey = try await self.getRSAKey()
 
@@ -541,7 +541,7 @@ public extension FncyWalletCore {
         let parameters: [String: Any] = ["rsaEncryptedHashedPin": rsaEncryptedHashedPin]
 
         let apiRequest = APIRequest(requestUrl: urlString,
-                                    method: .get,
+                                    method: .post,
                                     parameters: parameters)
 
         return try await WALLETAPI.request(apiRequest,
