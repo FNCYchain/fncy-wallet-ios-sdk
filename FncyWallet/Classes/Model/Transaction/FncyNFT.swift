@@ -17,20 +17,14 @@ import Foundation
 public struct FncyNFT: Codable {
     public let nftId: Int
     public let wid: Int?
-    public let nftOrd: Int?
     public let ownerOfDcd: OwnerOfDcd
     public let ownerOf: String
-    public let displayYn: Bool?
-    public let lockedYn: Bool
     public let nftInfo: NFTInfo
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.nftInfo = try container.decode(NFTInfo.self, forKey: .nftInfo)
         self.ownerOf = try container.decode(String.self, forKey: .ownerOf)
-        self.displayYn = try container.decodeIfPresent(String.self, forKey: .displayYn) == "Y"
-        self.lockedYn = try container.decode(String.self, forKey: .lockedYn) == "Y"
-        self.nftOrd = try container.decodeIfPresent(Int.self, forKey: .nftOrd)
         self.nftId = try container.decode(Int.self, forKey: .nftId)
         self.ownerOfDcd = try container.decode(OwnerOfDcd.self, forKey: .ownerOfDcd)
         self.wid = try container.decodeIfPresent(Int.self, forKey: .wid)
@@ -44,7 +38,7 @@ extension FncyNFT : CustomStringConvertible {
 }
 
 
-
+ 
 public struct NFTInfo: Codable {
     public let nftId: Int?
     public let nftNm: String
@@ -60,21 +54,12 @@ public struct NFTInfo: Codable {
     public let nftSymbolImg: String
     public let assetTypeDcd: AssetTypeDcd
     public let assetType: String
-    public let nftTypeDcd: NFTType
     public let nftMetaUri: String
     public let nftDirectLink: String?
     public let nftHolderAuthDirectLink: String?
     public let nftAnimationUrl: String?
     public let nftMediaUri: String?
     public let nftMetaJson: String?
-    public let retryCount: Int?
-    public let btnNftcancelYn: Bool
-    public let btnNftmodifyYn: Bool
-    public let finalizedYn: Bool?
-    public let binanceSaleYn: Bool
-    public let btnSendtogameYn: Bool
-    public let btnNftsellYn: Bool
-    public let holderAuthYn: Bool
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -93,22 +78,12 @@ public struct NFTInfo: Codable {
         self.nftSymbolImg = try container.decode(String.self, forKey: .nftSymbolImg)
         self.assetTypeDcd = try container.decode(AssetTypeDcd.self, forKey: .assetTypeDcd)
         self.assetType = try container.decode(String.self, forKey: .assetType)
-        self.nftTypeDcd = try container.decode(NFTType.self, forKey: .nftTypeDcd)
         self.nftMetaUri = try container.decode(String.self, forKey: .nftMetaUri)
         self.nftDirectLink = try container.decodeIfPresent(String.self, forKey: .nftDirectLink)
         self.nftHolderAuthDirectLink = try container.decodeIfPresent(String.self, forKey: .nftHolderAuthDirectLink)
         self.nftAnimationUrl = try container.decodeIfPresent(String.self, forKey: .nftAnimationUrl)
         self.nftMediaUri = try container.decodeIfPresent(String.self, forKey: .nftMediaUri)
         self.nftMetaJson = try container.decodeIfPresent(String.self, forKey: .nftMetaJson)
-        self.retryCount = try container.decodeIfPresent(Int.self, forKey: .retryCount)
-        
-        self.btnNftcancelYn = try container.decode(String.self, forKey: .btnNftcancelYn) == "Y"
-        self.btnNftmodifyYn = try container.decode(String.self, forKey: .btnNftmodifyYn) == "Y"
-        self.finalizedYn = try container.decodeIfPresent(String.self, forKey: .finalizedYn) == "Y"
-        self.binanceSaleYn = try container.decode(String.self, forKey: .binanceSaleYn) == "Y"
-        self.btnSendtogameYn = try container.decode(String.self, forKey: .btnSendtogameYn) == "Y"
-        self.btnNftsellYn = try container.decode(String.self, forKey: .btnNftsellYn) == "Y"
-        self.holderAuthYn = try container.decode(String.self, forKey: .holderAuthYn) == "Y"
     }
 }
 

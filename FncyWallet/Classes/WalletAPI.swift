@@ -74,9 +74,9 @@ extension WalletAPI {
     fileprivate static func checkResultValidation(_ data : ResultPresentable) throws {
         guard let result = data.result else { return }
         
-        guard result.number == 200 else {
-            throw FncyWalletError(reason: result.code,
-                                  code: result.number,
+        guard result.isSuccess else {
+            throw FncyWalletError(code: result.code,
+                                  statusCode: result.number,
                                   message: result.message)
         }
     }

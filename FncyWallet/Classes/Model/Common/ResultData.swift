@@ -16,7 +16,7 @@ import Foundation
 
 public struct ResultInfo: Codable {
     public let message: String
-    public let code: ApiFailureReason
+    public let code: String
     public let isSuccess: Bool
     public let number: Int
 }

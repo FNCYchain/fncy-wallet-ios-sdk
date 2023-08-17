@@ -140,8 +140,8 @@ public extension FncyWalletCore {
     }
 
     // 가스비 조회
-    func getGasPrice(chainID: Int) async throws -> GasPriceInfo {
-        let urlString = self.baseUrl + "/v1/block-chains/\(chainID)/gas-price"
+    func getGasPrice(chainId: Int) async throws -> GasPriceInfo {
+        let urlString = self.baseUrl + "/v1/block-chains/\(chainId)/gas-price"
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get)
         let result
@@ -456,7 +456,6 @@ public extension FncyWalletCore {
                         signatureType: TicketType,
                         toAddress: String,
                         transferVal: String? = nil,
-                        transferMethod: String? = nil,
                         // txGasPrice: String? = nil,
                         txInput: String? = nil,
                         contractAddress: String? = nil,
@@ -472,7 +471,7 @@ public extension FncyWalletCore {
                                           "transferTo": toAddress]
 
         if let transferVal = transferVal { parameters["transferVal"] = transferVal }
-        if let transferMethod = transferMethod { parameters["transferMethod"] = transferMethod }
+//        if let transferMethod = transferMethod { parameters["transferMethod"] = transferMethod }
         if let contractAddress = contractAddress { parameters["contractAddress"] = contractAddress }
         if let assetId = assetId { parameters["assetId"] = assetId }
         if let nftId = nftId { parameters["nftId"] = nftId }
@@ -549,8 +548,8 @@ public extension FncyWalletCore {
     }
 
     // 전송 티켓 조회
-    func getTicketInfo(ticketUUID: String) async throws -> TicketData {
-        let urlString = "\(self.baseUrl)/v1/transfers/tickets/\(ticketUUID)"
+    func getTicketInfo(ticketUuid: String) async throws -> TicketData {
+        let urlString = "\(self.baseUrl)/v1/transfers/tickets/\(ticketUuid)"
 
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get)
