@@ -61,9 +61,8 @@ extension WalletAPI {
 
         switch response.result {
         case .success(let data):
-            print("response result : ", response.result)
-            
-            try Self.checkResultValidation(data.data)
+            try Self.checkResultValidation(data.data,
+                                           apiRequest: service)
             
             return data.data
         case .failure(let afError):
@@ -71,13 +70,25 @@ extension WalletAPI {
         }
     }
     
-    fileprivate static func checkResultValidation(_ data : ResultPresentable) throws {
+    fileprivate static func checkResultValidation(_ data : ResultPresentable, apiRequest: APIRequest) throws {
         guard let result = data.result else { return }
         
         guard result.isSuccess else {
+            if let ticketData = data as? MakeTicketResult,
+                let web3Error = ticketData.web3Error {
+                throw FncyWalletError(code: result.code, statusCode: result.number, message: result.message, apiRequest: apiRequest, web3Error: web3Error)
+            }
+            
+            if let ticketData = data as? TicketData,
+                let web3Error = ticketData.web3Error {
+                throw FncyWalletError(code: result.code, statusCode: result.number, message: result.message, apiRequest: apiRequest, web3Error: web3Error)
+            }
+            
             throw FncyWalletError(code: result.code,
                                   statusCode: result.number,
-                                  message: result.message)
+                                  message: result.message,
+                                  apiRequest: apiRequest,
+                                  web3Error: nil)
         }
     }
 }

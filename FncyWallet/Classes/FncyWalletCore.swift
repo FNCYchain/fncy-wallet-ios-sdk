@@ -30,31 +30,33 @@ public extension FncyWalletCore {
     // MARK: - 회원
     // MARK: - 회원(회원추가)
     // 회원가입 및 로그인 시 마다 호출
-    func insertUser() async throws -> ResultData {
+    func insertUser() async throws -> Bool {
         let urlString = self.baseUrl + "/v1/users"
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .post)
-
-        return try await WALLETAPI.request(apiRequest,
+        
+        let result: ResultData = try await WALLETAPI.request(apiRequest,
                                            authToken: self.authToken)
+        return result.result?.isSuccess ?? false
     }
 
     // MARK: - 회원(기타)
     // 회원디바이스 토큰 삭제
-    func logoutUser(_ uuid: String) async throws -> ResultData {
+    func logoutUser(_ uuid: String) async throws -> Bool {
         let urlString = self.baseUrl + "/v1/users/user-devices/\(uuid)/token"
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .delete)
 
-        return try await WALLETAPI.request(apiRequest,
+        let result: ResultData = try await WALLETAPI.request(apiRequest,
                                            authToken: self.authToken)
+        return result.result?.isSuccess ?? false
     }
 
     /// RSA public key 조회
     /// - ${baseUrl}/v1/users/rsa-public
     /// - get
     /// - Returns: String
-    func getRSAKey() async throws -> String {
+    fileprivate func getRSAKey() async throws -> String {
         let urlString = self.baseUrl + "/v1/users/rsa-public"
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get)
@@ -70,24 +72,29 @@ public extension FncyWalletCore {
     // MARK: - 블록체인
     // MARK: - 블록체인(플랫폼)
     // 블록체인 플랫폼 상세 조회
-    func getBlockChainInfo(chainID: Int) async throws -> FncyChainInfo? {
+    func getBlockChainInfo(chainID: Int) async throws -> FncyChainInfo {
         let urlString = self.baseUrl + "/v1/block-chains/\(chainID)"
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get)
 
         let result: ListData<[FncyChainInfo]> = try await WALLETAPI.request(apiRequest,
                                                                             authToken: self.authToken)
-        return result.items?.first
+        guard let chainInfo = result.items?.first else {
+            throw FncyWalletError(reason: .missingFncyChainInfo)
+        }
+        return chainInfo
     }
 
     // 블록체인 플랫폼 자산 목록
-    func getAvailableTokens(chainID: Int) async throws -> PagingListData<[FncyAssetInfo]> {
+    func getAvailableTokens(chainID: Int) async throws -> [FncyAssetInfo] {
         let urlString = self.baseUrl + "/v1/block-chains/\(chainID)/assets"
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get)
 
-        return try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
+        let pagingListData:
+        PagingListData<[FncyAssetInfo]> = try await WALLETAPI.request(apiRequest,
+                                                                      authToken: self.authToken)
+        return pagingListData.items ?? []
     }
 
     // 블록체인 플랫폼 자산 contract
@@ -117,13 +124,18 @@ public extension FncyWalletCore {
 
     // MARK: - 블록체인(시세)
     // Fncy 정보 조회
-    func getFncyInfo() async throws -> ListData<[FncyInfo]> {
+    func getFncyInfo() async throws -> FncyCurrency {
         let urlString = self.baseUrl + "/v1/block-chains/fncy-info"
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get)
 
-        return try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
+        let listData: ListData<[FncyCurrency]> = try await WALLETAPI.request(apiRequest,
+                                                                             authToken: self.authToken)
+        guard let fncyInfo = listData.items?.first else {
+            throw FncyWalletError(reason: .missingFncyInfo)
+        }
+        
+        return fncyInfo
     }
 
     // MARK: - 블록체인(기타)
@@ -159,7 +171,7 @@ public extension FncyWalletCore {
     // 지갑 생성
     // MARK: 지갑 생성(파라미터체크)✅
     func makeWallet(walletNm: String,
-                    pinNumber: String) async throws -> WalletMakeResultData {
+                    pinNumber: String) async throws -> Int {
         
         try FncyUtil.pinStringValidationCheck(pinNumber)
         
@@ -178,8 +190,9 @@ public extension FncyWalletCore {
                                     method: .post,
                                     parameters: parameters)
         
-        return try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
+        let result: WalletMakeResultData = try await WALLETAPI.request(apiRequest,
+                                                                       authToken: self.authToken)
+        return result.wid
     }
 
     // 지갑 복원 키 추가
@@ -187,7 +200,7 @@ public extension FncyWalletCore {
     func postRegisterRestorationKey(wid: Int,
                                     questionSeq: Int,
                                     answer: String,
-                                    pinNumber: String) async throws -> ResultData {
+                                    pinNumber: String) async throws -> Bool {
         let rsaPublicKey = try await self.getRSAKey()
         
         let rsaEncryptUserQuestion = try String(questionSeq).data.sha256()
@@ -207,13 +220,14 @@ public extension FncyWalletCore {
                                     method: .post,
                                     parameters: params)
 
-        return try await WALLETAPI.request(apiRequest,
+        let result: ResultData = try await WALLETAPI.request(apiRequest,
                                            authToken: self.authToken)
+        return result.result?.isSuccess ?? false
     }
 
     // 지갑 비밀번호 확인
     func checkWalletPin(pinNumber: String,
-                        excludeHistoryYn: Bool = false) async throws -> ResultData {
+                        excludeHistoryYn: Bool = false) async throws -> Bool {
 
         try FncyUtil.pinStringValidationCheck(pinNumber)
 
@@ -229,8 +243,9 @@ public extension FncyWalletCore {
                                     method: .post,
                                     parameters: parameters)
 
-        return try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
+        let result: ResultData = try await WALLETAPI.request(apiRequest,
+                                                             authToken: self.authToken)
+        return result.result?.isSuccess ?? false
     }
 
     // 지갑 생성 - 복원용 질문 목록
@@ -251,7 +266,7 @@ public extension FncyWalletCore {
     }
 
     // 지갑 복구 질문답변 확인
-    func checkResetAnswer(answer: String) async throws -> ResultData {
+    func checkResetAnswer(answer: String) async throws -> Bool {
 
         let rsaPublicKey = try await self.getRSAKey()
 
@@ -271,14 +286,15 @@ public extension FncyWalletCore {
                                     method: .post,
                                     parameters: params)
 
-        return try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
+        let result: ResultData = try await WALLETAPI.request(apiRequest,
+                                                             authToken: self.authToken)
+        return result.result?.isSuccess ?? false
     }
 
     // MARK: - 지갑(지갑 수정)
     // MARK: 파라미터OK💠
     func resetWalletPin(oldPinNumber: String,
-                        newPinNumber: String) async throws -> ResultData {
+                        newPinNumber: String) async throws -> Bool {
 
         try FncyUtil.pinStringValidationCheck(oldPinNumber)
         try FncyUtil.pinStringValidationCheck(newPinNumber)
@@ -299,8 +315,9 @@ public extension FncyWalletCore {
                                     method: .patch,
                                     parameters: params)
 
-        return try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
+        let result: ResultData = try await WALLETAPI.request(apiRequest,
+                                                             authToken: self.authToken)
+        return result.result?.isSuccess ?? false
     }
 
     // 지갑 복원 - 사용자 선택 질문
@@ -320,7 +337,7 @@ public extension FncyWalletCore {
 
     // 지갑 복원 - 질문 답변
     func postResetQuestion(answer: String,
-                           newPinNumber: String) async throws -> ResultData {
+                           newPinNumber: String) async throws -> Bool {
 
         try FncyUtil.pinStringValidationCheck(newPinNumber)
 
@@ -340,8 +357,9 @@ public extension FncyWalletCore {
                                     method: .patch,
                                     parameters: parameters)
 
-        return try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
+        let result: ResultData = try await WALLETAPI.request(apiRequest,
+                                                             authToken: self.authToken)
+        return result.result?.isSuccess ?? false
     }
 
     // MARK: - 지갑(지갑 조회)
@@ -463,7 +481,7 @@ public extension FncyWalletCore {
                         assetId: Int? = nil,
                         nftId: Int? = nil,
                         maxPriorityPerGas: String? = nil,
-                        maxFeePerGas: String? = nil) async throws -> TicketData {
+                        maxFeePerGas: String? = nil) async throws -> FncyTicket {
 
         let urlString = self.baseUrl + "/v2/transfers/estimate"
         var parameters: [String: Any] = ["chainId": chainId,
@@ -484,8 +502,14 @@ public extension FncyWalletCore {
                                     method: .post,
                                     parameters: parameters)
 
-        return try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
+        let ticketData: TicketData = try await WALLETAPI.request(apiRequest,
+                                                             authToken: self.authToken)
+        
+        guard let ticket = ticketData.items?.first else {
+            throw FncyWalletError(reason: .missingEstimateResult)
+        }
+        
+        return ticket
     }
 
     // 전송 티켓 생성
@@ -502,7 +526,7 @@ public extension FncyWalletCore {
                     contractAddress: String? = nil,
                     maxPriorityPerGas: String? = nil,
                     maxFeePerGas: String? = nil,
-                    txGasLimit: String? = nil) async throws -> MakeTicketResult {
+                    txGasLimit: String? = nil) async throws -> String {
         let urlString = "\(self.baseUrl)/v2/transfers/tickets"
 
         var parameters: [String: Any] = ["chainId": chainId,
@@ -524,13 +548,19 @@ public extension FncyWalletCore {
                                     method: .post,
                                     parameters: parameters)
 
-        return try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
+        let result:
+        MakeTicketResult = try await WALLETAPI.request(apiRequest,
+                                                       authToken: self.authToken)
+        guard let ticketUUID = result.ticketUuid else {
+            throw FncyWalletError(reason: .missingTicketUUID)
+        }
+        
+        return ticketUUID
     }
 
     // 트랜잭션 전송
     func sendTicket(ticketUuid: String,
-                    pinNumber: String) async throws -> SendTicketResultData {
+                    pinNumber: String) async throws -> String {
 
         let rsaPublicKey = try await self.getRSAKey()
 
@@ -543,20 +573,29 @@ public extension FncyWalletCore {
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .post,
                                     parameters: parameters)
-
-        return try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
+        
+        let result: SendTicketResultData = try await WALLETAPI.request(apiRequest,
+                                                                       authToken: self.authToken)
+        guard let txId = result.txId else {
+            throw FncyWalletError(reason: .missingTxID)
+        }
+        
+        return txId
     }
 
     // 전송 티켓 조회
-    func getTicketInfo(ticketUuid: String) async throws -> TicketData {
+    func getTicketInfo(ticketUuid: String) async throws -> FncyTicket {
         let urlString = "\(self.baseUrl)/v1/transfers/tickets/\(ticketUuid)"
 
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get)
 
-        return try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
+        let ticketData : TicketData = try await WALLETAPI.request(apiRequest,
+                                                                  authToken: self.authToken)
+        guard let ticket = ticketData.items?.first else {
+            throw FncyWalletError(reason: .noTicketDataFoundbyTicketID)
+        }
+        return ticket
     }
 
     // MARK: - 트랜잭션(트랜잭션 조회)

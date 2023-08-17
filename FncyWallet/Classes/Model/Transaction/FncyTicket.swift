@@ -41,27 +41,29 @@ extension TicketData : CustomStringConvertible {
     }
 }
 
-public struct Web3Error: Codable, CustomStringConvertible {
-    public let data: String
+public struct Web3Error: Codable {
+    public let data: String?
     public let message: String
     public let code: Int
-    
-    public var description: String {
+}
+
+extension Web3Error: CustomStringConvertible {
+     public var description: String {
         return self.prettyJSON()
     }
 }
 
 public struct FncyTicket: Codable {
     public let wid: Int
-    public let signatureType: String //
+    public let signatureType: String
     public let signatureTypeDcd: TicketType?
     public let transferFrom: String
     public let transferTo: String
-    public let transferVal: Decimal //
+    public let transferVal: Decimal
     public let txNonce: Decimal
-    public let txGasPrice: Decimal //
-    public let txGasLimit: Decimal //
-    public let txInput: String //
+    public let txGasPrice: Decimal
+    public let txGasLimit: Decimal
+    public let txInput: String
     public let contractAddress: String?
     public let chainId: Int
     public let assetId: Int

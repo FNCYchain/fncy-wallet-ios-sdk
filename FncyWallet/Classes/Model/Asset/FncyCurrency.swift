@@ -14,7 +14,7 @@
 
 import Foundation
 
-public struct FncyInfo: Codable {
+public struct FncyCurrency: Codable {
     public let assetInfo: FncyAssetInfo //
     public let dailyVolumeKrw: Decimal
     public let krwPrice: Decimal
@@ -50,7 +50,7 @@ public struct FncyInfo: Codable {
     //
 }
 
-extension FncyInfo : CustomStringConvertible {
+extension FncyCurrency : CustomStringConvertible {
     public var description: String {
         return self.prettyJSON()
     }
