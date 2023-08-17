@@ -11,6 +11,7 @@ Pod::Spec.new do |s|
   s.version          = "0.1.7"
   s.summary          = "FNCY Wallet SDK for iOS"
   s.homepage         = "https://github.com/FNCYchain/fncy-wallet-ios-sdk"
+  s.license          = { :type => "Apache-2.0", :file => "LICENSE" }
   s.author           = "MetaverseWorld, Inc."
   s.source           = { :git => "https://github.com/FNCYchain/fncy-wallet-ios-sdk.git", :tag => s.version.to_s }
   s.source_files = "FncyWallet/Classes/**/*"
