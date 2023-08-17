@@ -50,7 +50,7 @@ public struct ListData<C: Codable>: ResultPresentable {
     public let items: C?
     public let resultType: String?
     public let result: ResultInfo?
-    public let paging: Paging?
+    
     public let wid : Int?
     
     public init(from decoder: Decoder) throws {
@@ -58,7 +58,7 @@ public struct ListData<C: Codable>: ResultPresentable {
         self.resultType = try container.decodeIfPresent(String.self, forKey: .resultType)
         self.result = try container.decodeIfPresent(ResultInfo.self, forKey: .result)
         self.items = try container.decodeIfPresent(C.self, forKey: .items)
-        self.paging = try container.decodeIfPresent(Paging.self, forKey: .paging)
+        
         self.wid = try container.decodeIfPresent(Int.self, forKey: .wid)
     }
 }
@@ -66,13 +66,12 @@ public struct ListData<C: Codable>: ResultPresentable {
 // PagingListData<C>
 public struct PagingListData<C: Codable>: ResultPresentable {
     public let items: C?
-    
+    public let paging: Paging?
     public let resultType: String?
     public let result: ResultInfo?
-
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: PagingListData<C>.CodingKeys.self)
-        
+        self.paging = try container.decodeIfPresent(Paging.self, forKey: .paging)
         self.resultType = try container.decodeIfPresent(String.self, forKey: PagingListData<C>.CodingKeys.resultType)
         self.result = try container.decodeIfPresent(ResultInfo.self, forKey: PagingListData<C>.CodingKeys.result)
         self.items = try container.decodeIfPresent(C.self, forKey: PagingListData<C>.CodingKeys.items)

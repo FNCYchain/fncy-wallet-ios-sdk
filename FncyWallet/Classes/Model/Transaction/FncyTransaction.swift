@@ -15,17 +15,17 @@
 import Foundation
 
 public struct FncyTransaction: Codable {
-    public let assetInfo: FncyAssetInfo //
+    public let assetInfo: FncyAssetInfo
     public let blockNumber: Decimal?
     public let txFee: Decimal?
     public let transferEventDcd: TransferEvent
     public let transferSeq: Int
-    public let transferVal: Decimal // 
+    public let transferVal: Decimal
     public let blockTimestamp: TimeInterval
     public let inOutDcd: InOutDcd
     public let inOut: String
     public let transferEventIndex: Int?
-    public let transferMethod: String //  : 일반적인 자산 전송의 경우 transfer, 그 외의 경우 contract의
+    public let transferMethod: String
     public let historyUts: TimeInterval
     public let historySeq: Int
     public let transferEvent: String
@@ -33,21 +33,18 @@ public struct FncyTransaction: Codable {
     public let txVal: Decimal?
     public let txAnnotation: String
     public let transferTo: String
-    public let wid: Int //
+    public let wid: Int
     public let displayTxFee: String?
-    public let chainId: Int? //
+    public let chainId: Int?
     public let walletAddress: String
     public let displayTransferVal: String
     public let txNonce: Int?
     public let transferFrom: String
     public let txSt: String?
     public let blockHash: String?
-    public let historyKst: TimeInterval? // TranferMethod  이력 변경이 발생한 타임스탬프
+    public let historyKst: TimeInterval?
     public let txStDcd: TxStDcd?
-    public let txId: String? //
-    //트랜잭션 전송에 사용한 가스비
-    
-    
+    public let txId: String?
 }
 
 extension FncyTransaction : CustomStringConvertible {

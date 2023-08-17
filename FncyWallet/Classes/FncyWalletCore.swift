@@ -105,13 +105,14 @@ public extension FncyWalletCore {
     }
 
     // 블록체인 플랫폼 NFT 목록
-    func getNFTItemList(chainID: Int) async throws -> PagingListData<[NFTItemInfo]> {
+    func getNFTItemList(chainID: Int) async throws -> [NFTItemInfo] {
         let urlString = self.baseUrl + "/v1/block-chains/\(chainID)/nfts"
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get)
-
-        return try await WALLETAPI.request(apiRequest,
+        let pagingListData:
+        PagingListData<[NFTItemInfo]> = try await WALLETAPI.request(apiRequest,
                                            authToken: self.authToken)
+        return pagingListData.items ?? []
     }
 
     // MARK: - 블록체인(시세)
