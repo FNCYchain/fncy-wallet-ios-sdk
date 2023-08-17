@@ -14,6 +14,23 @@
 
 import Foundation
 
+public struct FncyAsset: Codable {
+    public let wid: Int
+    public let chainId: Int
+    public let assetSeq: Int
+    public let balance: Decimal?
+    public let balancePlainString : String?
+    public let displayBalance: String?
+    public let assetInfo: FncyAssetInfo
+    public let prices: FncyPrice
+}
+
+extension FncyAsset : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
 public struct FncyAssetInfo: Codable {
     public let chainId: Int?
     public let chainNm: String?

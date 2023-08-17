@@ -49,7 +49,6 @@ public struct NFTInfo: Codable {
     public let gameCode: String?
     public let marketId: String?
     public let attributes: [String]?
-    //public let nftMetaInfo: NFTMetaInfo?
     public let nftSymbol: String
     public let nftSymbolImg: String
     public let assetTypeDcd: AssetTypeDcd
@@ -73,7 +72,6 @@ public struct NFTInfo: Codable {
         self.marketId = try container.decodeIfPresent(String.self, forKey: .marketId)
         
         self.attributes = try container.decodeIfPresent([String].self, forKey: .attributes)
-        //self.nftMetaInfo = try container.decodeIfPresent(NFTMetaInfo.self, forKey: .nftMetaInfo)
         self.nftSymbol = try container.decode(String.self, forKey: .nftSymbol)
         self.nftSymbolImg = try container.decode(String.self, forKey: .nftSymbolImg)
         self.assetTypeDcd = try container.decode(AssetTypeDcd.self, forKey: .assetTypeDcd)
@@ -92,23 +90,3 @@ extension NFTInfo : CustomStringConvertible {
         return self.prettyJSON()
     }
 }
-
-
-
-//public struct NFTMetaInfo: Codable {
-//    struct NFTMetaInfoAttribute: Codable {
-//        let index: String
-//        let value: String
-//    }
-//
-//    let gameName: String
-//    let description: String
-//    let attributes: [NFTMetaInfoAttribute]
-//
-//    public init(from decoder: Decoder) throws {
-//        let container = try decoder.container(keyedBy: CodingKeys.self)
-//        self.gameName = try container.decode(String.self, forKey: .gameName)
-//        self.description = try container.decode(String.self, forKey: .description)
-//        self.attributes = try container.decode([NFTMetaInfoAttribute].self, forKey: .attributes)
-//    }
-//}
