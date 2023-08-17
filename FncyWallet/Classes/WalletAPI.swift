@@ -61,8 +61,6 @@ extension WalletAPI {
 
         switch response.result {
         case .success(let data):
-            print("response result : ", response.result)
-            
             try Self.checkResultValidation(data.data)
             
             return data.data
