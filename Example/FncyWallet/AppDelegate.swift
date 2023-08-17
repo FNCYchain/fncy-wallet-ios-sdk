@@ -23,8 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        FncyWalletSDK.initSDK(apiKey: "qhswiamdxgs3vf478795tahvubrgw5rx",
-                              baseURL: "https://devx-apis.cubeapi.io")
+        FncyWalletSDK.initSDK(apiKey: "",
+                              baseURL: "")
         
         return true
     }
