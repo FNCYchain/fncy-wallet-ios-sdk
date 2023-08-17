@@ -1,7 +1,6 @@
 # Fncy Wallet SDK for iOS
 
 [![Version](https://img.shields.io/cocoapods/v/FncyWallet.svg?style=flat)](https://cocoapods.org/pods/FncyWallet)
-[![License](https://img.shields.io/cocoapods/l/FncyWallet.svg?style=flat)](https://cocoapods.org/pods/FncyWallet)
 [![Platform](https://img.shields.io/cocoapods/p/FncyWallet.svg?style=flat)](https://cocoapods.org/pods/FncyWallet)
 
 ## Example
