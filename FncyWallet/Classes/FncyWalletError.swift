@@ -21,7 +21,9 @@ public enum FncyWalletError: Error {
     // 서버 응답 오류
     case apiFailed(code: String,
                    apiStatusCode: Int,
-                   errorMessage: String)
+                   errorMessage: String,
+                   apiRequest: APIRequest,
+                   web3Error: Web3Error?)
     // 응답 데이터가 유효하지 않음
     case invalidDataError(reason: FncyDataErrorReason,
                           errorMessage: String?)
@@ -47,13 +49,16 @@ extension FncyWalletError : CustomStringConvertible {
     public var description: String {
         switch self {
         case .clientFailed(let reason, let errorMessage):
-            return String(format: "[ClientError]: %@ \n%@", reason.description, errorMessage ?? "")
+            return String(format: "🚫[FncyWallet ClientError Occur]\n-reason: %@\n-message: %@\n", reason.description, errorMessage ?? "")
             
-        case .apiFailed(let code, let statusCode, let errorMessage):
-            return String(format: "[WalletAPI Error(%d)]: %@ \n%@", statusCode, code, errorMessage)
+        case .apiFailed(let code, let statusCode, let errorMessage, let apiRequest, let web3Error):
+            guard let web3Error = web3Error else {
+                return String(format: "🚫[FncyWallet APIError Occur]\n-ErrorCode: %@\n-StatusCode: %d\n-message: %@\n%@\n", code, statusCode, errorMessage, String(describing: apiRequest))
+            }
+            return String(format: "🚫[FncyWallet APIError Occur]\n-ErrorCode: %@\n-StatusCode: %d\n-message: %@\n-web3error:%@\n%@\n", code, statusCode, errorMessage,  String(describing: web3Error), String(describing: apiRequest))
             
         case .invalidDataError(let reason, let errorMessage):
-            return String(format: "[Data Error] %@ : %@", reason.description, errorMessage ?? "")
+            return String(format: "🚫[FncyWallet DataError Occur]\n-reason:[%@]\n-message:%@\n", reason.description, errorMessage ?? "")
         }
     }
 }
@@ -92,10 +97,14 @@ extension ClientFailureReason : CustomStringConvertible {
 extension FncyWalletError {
     internal init(code: String,
                   statusCode: Int,
-                  message: String) {
+                  message: String,
+                  apiRequest: APIRequest,
+                  web3Error: Web3Error?) {
         self = .apiFailed(code: code,
                           apiStatusCode: statusCode,
-                          errorMessage: message)
+                          errorMessage: message,
+                          apiRequest: apiRequest,
+                          web3Error: web3Error)
     }
 }
 

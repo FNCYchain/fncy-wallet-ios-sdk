@@ -56,7 +56,7 @@ public extension FncyWalletCore {
     /// - ${baseUrl}/v1/users/rsa-public
     /// - get
     /// - Returns: String
-    func getRSAKey() async throws -> String {
+    fileprivate func getRSAKey() async throws -> String {
         let urlString = self.baseUrl + "/v1/users/rsa-public"
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get)

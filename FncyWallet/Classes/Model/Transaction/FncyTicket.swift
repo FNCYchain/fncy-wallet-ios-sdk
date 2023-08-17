@@ -41,12 +41,14 @@ extension TicketData : CustomStringConvertible {
     }
 }
 
-public struct Web3Error: Codable, CustomStringConvertible {
-    public let data: String
+public struct Web3Error: Codable {
+    public let data: String?
     public let message: String
     public let code: Int
-    
-    public var description: String {
+}
+
+extension Web3Error: CustomStringConvertible {
+     public var description: String {
         return self.prettyJSON()
     }
 }

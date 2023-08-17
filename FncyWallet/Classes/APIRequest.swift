@@ -30,12 +30,9 @@ public struct APIRequest: CustomStringConvertible {
 
     public var description: String {
         let parameters: String = {
-            guard let parameters = self.parameters else {
-                return "nil"
-            }
-            return "- parameters : \(String(describing: parameters))"
+            guard let parameters = self.parameters else { return "nil" }
+            return "\(parameters as NSDictionary)"
         }()
-
-        return "- requestUrl : \(self.requestUrl)\r" + "- method : \(self.method)\r" + "- parameters : \(parameters)\r"
+        return "❗️[request info]\n-url: \(self.requestUrl)\n" + "-method: \(self.method)\n" + "-parameters:\n \(parameters)"
     }
 }
