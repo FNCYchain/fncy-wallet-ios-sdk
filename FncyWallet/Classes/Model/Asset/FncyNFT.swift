@@ -37,8 +37,6 @@ extension FncyNFT : CustomStringConvertible {
     }
 }
 
-
- 
 public struct NFTInfo: Codable {
     public let nftId: Int?
     public let nftNm: String
@@ -48,7 +46,7 @@ public struct NFTInfo: Codable {
     public let nftDesc: String?
     public let gameCode: String?
     public let marketId: String?
-    public let attributes: [String]?
+    public let attributes: [FncyNFTAttribute]?
     public let nftSymbol: String
     public let nftSymbolImg: String
     public let assetTypeDcd: AssetTypeDcd
@@ -71,7 +69,7 @@ public struct NFTInfo: Codable {
         self.gameCode = try container.decodeIfPresent(String.self, forKey: .gameCode)
         self.marketId = try container.decodeIfPresent(String.self, forKey: .marketId)
         
-        self.attributes = try container.decodeIfPresent([String].self, forKey: .attributes)
+        self.attributes = try container.decodeIfPresent([FncyNFTAttribute].self, forKey: .attributes)
         self.nftSymbol = try container.decode(String.self, forKey: .nftSymbol)
         self.nftSymbolImg = try container.decode(String.self, forKey: .nftSymbolImg)
         self.assetTypeDcd = try container.decode(AssetTypeDcd.self, forKey: .assetTypeDcd)
@@ -86,6 +84,23 @@ public struct NFTInfo: Codable {
 }
 
 extension NFTInfo : CustomStringConvertible {
+    public var description: String {
+        return self.prettyJSON()
+    }
+}
+
+public struct FncyNFTAttribute : Codable {
+    let attrSeq : Int
+    let nftSeq : Int?
+    let trait : String?
+    let traitValue : String?
+    let rarity : Decimal
+    let order : Int?
+    let createDt: TimeInterval?
+    let updateUts : TimeInterval?
+}
+
+extension FncyNFTAttribute : CustomStringConvertible {
     public var description: String {
         return self.prettyJSON()
     }
