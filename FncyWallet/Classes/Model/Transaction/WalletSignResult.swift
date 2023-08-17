@@ -14,7 +14,7 @@
 
 import Foundation
 
-public struct WalletSignResult: ResultPresentable {
+internal struct WalletSignResult: ResultPresentable {
     public var resultType: String?
     public var result: ResultInfo?
     public let signature: String?

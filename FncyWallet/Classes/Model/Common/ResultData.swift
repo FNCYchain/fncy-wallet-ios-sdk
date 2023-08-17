@@ -27,7 +27,7 @@ extension ResultInfo : CustomStringConvertible  {
     }
 }
 
-public struct ResultData: ResultPresentable {
+internal struct ResultData: ResultPresentable {
     public let resultType: String?
     public let result: ResultInfo?
 }
@@ -38,7 +38,7 @@ extension ResultData : CustomStringConvertible  {
     }
 }
 
-public struct WalletMakeResultData: ResultPresentable {
+internal struct WalletMakeResultData: ResultPresentable {
     public var resultType: String?
     public var result: ResultInfo?
     public let wid: Int
