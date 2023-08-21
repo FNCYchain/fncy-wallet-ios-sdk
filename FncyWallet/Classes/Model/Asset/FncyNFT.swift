@@ -19,11 +19,11 @@ public struct FncyNFT: Codable {
     public let wid: Int?
     public let ownerOfDcd: OwnerOfDcd
     public let ownerOf: String
-    public let nftInfo: NFTInfo
+    public let nftInfo: FncyNFTInfo
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.nftInfo = try container.decode(NFTInfo.self, forKey: .nftInfo)
+        self.nftInfo = try container.decode(FncyNFTInfo.self, forKey: .nftInfo)
         self.ownerOf = try container.decode(String.self, forKey: .ownerOf)
         self.nftId = try container.decode(Int.self, forKey: .nftId)
         self.ownerOfDcd = try container.decode(OwnerOfDcd.self, forKey: .ownerOfDcd)
@@ -37,14 +37,13 @@ extension FncyNFT : CustomStringConvertible {
     }
 }
 
-public struct NFTInfo: Codable {
+public struct FncyNFTInfo: Codable {
     public let nftId: Int?
     public let nftNm: String
     public let chainId: Int
     public let tokenId: String
     public let contractAddress: String
     public let nftDesc: String?
-    public let gameCode: String?
     public let marketId: String?
     public let attributes: [FncyNFTAttribute]?
     public let nftSymbol: String
@@ -52,8 +51,6 @@ public struct NFTInfo: Codable {
     public let assetTypeDcd: AssetTypeDcd
     public let assetType: String
     public let nftMetaUri: String
-    public let nftDirectLink: String?
-    public let nftHolderAuthDirectLink: String?
     public let nftAnimationUrl: String?
     public let nftMediaUri: String?
     public let nftMetaJson: String?
@@ -66,24 +63,20 @@ public struct NFTInfo: Codable {
         self.tokenId = try container.decode(String.self, forKey: .tokenId)
         self.contractAddress = try container.decode(String.self, forKey: .contractAddress)
         self.nftDesc = try container.decodeIfPresent(String.self, forKey: .nftDesc)
-        self.gameCode = try container.decodeIfPresent(String.self, forKey: .gameCode)
         self.marketId = try container.decodeIfPresent(String.self, forKey: .marketId)
-        
         self.attributes = try container.decodeIfPresent([FncyNFTAttribute].self, forKey: .attributes)
         self.nftSymbol = try container.decode(String.self, forKey: .nftSymbol)
         self.nftSymbolImg = try container.decode(String.self, forKey: .nftSymbolImg)
         self.assetTypeDcd = try container.decode(AssetTypeDcd.self, forKey: .assetTypeDcd)
         self.assetType = try container.decode(String.self, forKey: .assetType)
         self.nftMetaUri = try container.decode(String.self, forKey: .nftMetaUri)
-        self.nftDirectLink = try container.decodeIfPresent(String.self, forKey: .nftDirectLink)
-        self.nftHolderAuthDirectLink = try container.decodeIfPresent(String.self, forKey: .nftHolderAuthDirectLink)
         self.nftAnimationUrl = try container.decodeIfPresent(String.self, forKey: .nftAnimationUrl)
         self.nftMediaUri = try container.decodeIfPresent(String.self, forKey: .nftMediaUri)
         self.nftMetaJson = try container.decodeIfPresent(String.self, forKey: .nftMetaJson)
     }
 }
 
-extension NFTInfo : CustomStringConvertible {
+extension FncyNFTInfo : CustomStringConvertible {
     public var description: String {
         return self.prettyJSON()
     }

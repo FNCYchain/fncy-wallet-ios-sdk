@@ -85,18 +85,6 @@ public extension FncyWalletCore {
         return chainInfo
     }
 
-    // 블록체인 플랫폼 자산 목록
-    func getAvailableTokens(chainID: Int) async throws -> [FncyAssetInfo] {
-        let urlString = self.baseUrl + "/v1/block-chains/\(chainID)/assets"
-        let apiRequest = APIRequest(requestUrl: urlString,
-                                    method: .get)
-
-        let pagingListData:
-        PagingListData<[FncyAssetInfo]> = try await WALLETAPI.request(apiRequest,
-                                                                      authToken: self.authToken)
-        return pagingListData.items ?? []
-    }
-
     // 블록체인 플랫폼 자산 contract
     func getContractInfo(chainID: Int,
                          contractAddress: String) async throws -> FncyAssetInfo {
@@ -109,17 +97,6 @@ public extension FncyWalletCore {
         guard let contractInfo = listData.items?.first
         else { throw FncyWalletError(reason: .noFoundContractInfo) }
         return contractInfo
-    }
-
-    // 블록체인 플랫폼 NFT 목록
-    func getNFTItemList(chainID: Int) async throws -> [NFTItemInfo] {
-        let urlString = self.baseUrl + "/v1/block-chains/\(chainID)/nfts"
-        let apiRequest = APIRequest(requestUrl: urlString,
-                                    method: .get)
-        let pagingListData:
-        PagingListData<[NFTItemInfo]> = try await WALLETAPI.request(apiRequest,
-                                           authToken: self.authToken)
-        return pagingListData.items ?? []
     }
 
     // MARK: - 블록체인(시세)
@@ -153,12 +130,12 @@ public extension FncyWalletCore {
     }
 
     // 가스비 조회
-    func getGasPrice(chainId: Int) async throws -> GasPriceInfo {
+    func getGasPrice(chainId: Int) async throws -> FncyGasPrice {
         let urlString = self.baseUrl + "/v1/block-chains/\(chainId)/gas-price"
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get)
         let result
-        : ListData<[GasPriceInfo]> = try await WALLETAPI.request(apiRequest,
+        : ListData<[FncyGasPrice]> = try await WALLETAPI.request(apiRequest,
                                                                  authToken: self.authToken)
         guard let gasPriceInfo = result.items?.first
         else { throw FncyWalletError(reason: .emptyGasPriceInfo) }

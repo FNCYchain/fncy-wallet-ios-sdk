@@ -15,7 +15,7 @@
 import Foundation
 
 public struct FncyCurrency: Codable {
-    public let assetInfo: FncyAssetInfo //
+    public let assetInfo: FncyAssetInfo
     public let dailyVolumeKrw: Decimal
     public let krwPrice: Decimal
     public let displayBtcPrice: String
@@ -23,11 +23,11 @@ public struct FncyCurrency: Codable {
     public let displayDailyVolumeKrw: String
     public let displayDailyHigherKrw: String
     public let dailyLowerUsd: Decimal
-    public let hourChange: Decimal // 
+    public let hourChange: Decimal
     public let whitePaperLink: String
     public let displayDailyLowerKrw: String
     public let dailyHigherKrw: Decimal
-    public let assetId: Int //
+    public let assetId: Int
     public let displayDailyVolumeUsd: String
     public let displayKrwPrice: String
     public let ethPrice: Decimal
@@ -36,18 +36,12 @@ public struct FncyCurrency: Codable {
     public let usdPrice: Decimal
     public let displayDailyHigherUsd: String
     public let displayEthPrice: String
-    public let projectLink: String //
+    public let projectLink: String
     public let dailyLowerKrw: Decimal
     public let displayUsdPrice: String
     public let dailyVolumeUsd: Decimal
-    public let symbol: String //
-    public let dayChange: Decimal //
-    let slug: String
-    let cmcName: String
-    
-    //
-    //
-    //
+    public let symbol: String
+    public let dayChange: Decimal
 }
 
 extension FncyCurrency : CustomStringConvertible {
