@@ -14,7 +14,7 @@
 
 import Foundation
 
-public struct GasPriceInfo: Codable {
+public struct FncyGasPrice: Codable {
     public let slowGasPrice: Decimal
     public let middleGasPrice: Decimal
     public let fastGasPrice: Decimal
@@ -22,7 +22,7 @@ public struct GasPriceInfo: Codable {
     public let baseFeePerGas: Decimal
 }
 
-extension GasPriceInfo : CustomStringConvertible {
+extension FncyGasPrice : CustomStringConvertible {
     public var description: String {
         return self.prettyJSON()
     }

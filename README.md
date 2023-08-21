@@ -89,7 +89,7 @@ import FncyWallet
 
 ## Documentation 
 
-* [GitBook : Fncy Wallet SDK for iOS](https://app.gitbook.com/o/sxbvsaQu6S0zvfR1DBLL/s/rtEQIDnbkvSB2krcokD0/for-developers/fncy-mobile-app/fncy-wallet-sdk/ios)
+* [GitBook : Fncy Wallet SDK for iOS](https://docs.fncy.world/for-developers/wallet/sdk/ios)
  
 ## Author
 

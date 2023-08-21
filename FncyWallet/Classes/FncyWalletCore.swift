@@ -153,12 +153,12 @@ public extension FncyWalletCore {
     }
 
     // 가스비 조회
-    func getGasPrice(chainId: Int) async throws -> GasPriceInfo {
+    func getGasPrice(chainId: Int) async throws -> FncyGasPrice {
         let urlString = self.baseUrl + "/v1/block-chains/\(chainId)/gas-price"
         let apiRequest = APIRequest(requestUrl: urlString,
                                     method: .get)
         let result
-        : ListData<[GasPriceInfo]> = try await WALLETAPI.request(apiRequest,
+        : ListData<[FncyGasPrice]> = try await WALLETAPI.request(apiRequest,
                                                                  authToken: self.authToken)
         guard let gasPriceInfo = result.items?.first
         else { throw FncyWalletError(reason: .emptyGasPriceInfo) }
