@@ -85,18 +85,6 @@ public extension FncyWalletCore {
         return chainInfo
     }
 
-    // 블록체인 플랫폼 자산 목록
-    func getAvailableTokens(chainID: Int) async throws -> [FncyAssetInfo] {
-        let urlString = self.baseUrl + "/v1/block-chains/\(chainID)/assets"
-        let apiRequest = APIRequest(requestUrl: urlString,
-                                    method: .get)
-
-        let pagingListData:
-        PagingListData<[FncyAssetInfo]> = try await WALLETAPI.request(apiRequest,
-                                                                      authToken: self.authToken)
-        return pagingListData.items ?? []
-    }
-
     // 블록체인 플랫폼 자산 contract
     func getContractInfo(chainID: Int,
                          contractAddress: String) async throws -> FncyAssetInfo {
