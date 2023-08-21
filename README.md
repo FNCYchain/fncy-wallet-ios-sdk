@@ -79,12 +79,12 @@ import FncyWallet
 ```
      
 ```swift
-    let authToken = "authorizationToken"
-    let fncyWallet = FncyWalletCore(authToken: authToken)
+let authToken = "authorizationToken"
+let fncyWallet = FncyWalletCore(authToken: authToken)
     
-    let walletData = try await fncyWallet.getWallet()
+let walletData = try await fncyWallet.getWallet()
     
-    print(walletData.walletAddress)  
+print(walletData.walletAddress)  
 ```
 
 ## Documentation 
