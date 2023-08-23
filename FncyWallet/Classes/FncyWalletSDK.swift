@@ -16,7 +16,7 @@ import Foundation
 
 /// 프로젝트 전역 SDK
 final public class FncyWalletSDK {
-    private let _version = "0.1.12"
+    private let _version = "0.1.13"
     /// FncyWalletSDK 의 공유 인스턴스
     public static let shared = FncyWalletSDK()
     private var _apikey: String?
@@ -26,10 +26,9 @@ final public class FncyWalletSDK {
         _baseUrl = ""
     }
 
-    public static func initSDK(apiKey: String,
-                               baseURL: String = "") {
-        FncyWalletSDK.shared.initialize(apiKey: apiKey,
-                                        baseURL: baseURL)
+    public static func initSDK(environment: FncyWalletSDKEnvironment) {
+        FncyWalletSDK.shared.initialize(apiKey: environment.apiKey,
+                                        baseURL: environment.endpoint)
     }
 
     private func initialize(apiKey: String,
@@ -40,6 +39,24 @@ final public class FncyWalletSDK {
 
     public func sdkVersion() -> String {
         return _version
+    }
+}
+
+public enum FncyWalletSDKEnvironment {
+    case testnet
+    case mainnet
+    
+    var endpoint : String {
+        switch self {
+        case .testnet:
+            return "https://devx-apis.cubeapi.io"
+        case .mainnet:
+            return "https://apis.cubeapi.io"
+        }
+    }
+    
+    var apiKey : String {
+        return "qhswiamdxgs3vf478795tahvubrgw5rx"
     }
 }
 
